@@ -178,7 +178,7 @@ class _TimetableGridState extends State<TimetableGrid> {
           ),
         ],
       ),
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 8.w),
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
       child: Row(
         children: [
           Expanded(

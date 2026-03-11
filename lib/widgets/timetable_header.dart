@@ -12,40 +12,58 @@ class TimetableHeader extends StatelessWidget {
     final primary = theme.colorScheme.primary;
 
     return Container(
+      margin: EdgeInsets.only(bottom: 16.h, top: 8.h),
       decoration: BoxDecoration(
-        color: isDark ? theme.colorScheme.surfaceContainerHighest : Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: isDark
+              ? [primary.withOpacity(0.8), primary.withOpacity(0.4)]
+              : [primary, primary.withBlue(200)],
+        ),
+        borderRadius: BorderRadius.circular(30.r), // Distinct pill shape
         boxShadow: [
           BoxShadow(
-            color: isDark ? Colors.black26 : primary.withOpacity(0.08),
-            blurRadius: 15.r,
-            offset: Offset(0, 8.h),
+            color: primary.withOpacity(0.3), blurRadius: 12.r, offset: Offset(0, 6.h),
           ),
         ],
-        border: Border.all(color: isDark ? Colors.transparent : primary.withOpacity(0.1)),
       ),
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 8.w),
+      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
       child: Row(
         children: [
           _HeaderCell(
             'PRAYER'.tr,
-            flex: 3,
-            color: isDark ? Colors.white70 : theme.colorScheme.onSurface.withOpacity(0.7),
+            flex: 4,
+            color: Colors.white,
             alignLeft: true,
-            icon: Icons.mosque_outlined,
+            icon: Icons.mosque_rounded,
           ),
+          _VerticalDivider(),
           _HeaderCell(
             'AZAN'.tr,
-            color: isDark ? Colors.white70 : theme.colorScheme.onSurface.withOpacity(0.7),
-            icon: Icons.volume_up_outlined,
+            flex: 2,
+            color: Colors.white,
+            icon: Icons.notifications_active_rounded,
           ),
+          _VerticalDivider(),
           _HeaderCell(
             'JAMAAT'.tr,
-            color: isDark ? Colors.white70 : theme.colorScheme.onSurface.withOpacity(0.7),
-            icon: Icons.people_outline,
+            flex: 3, color: Colors.white, icon: Icons.groups_rounded,
           ),
         ],
       ),
+    );
+  }
+}
+
+class _VerticalDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 18.h,
+      width: 1,
+      margin: EdgeInsets.symmetric(horizontal: 4.w),
+      color: Colors.white24,
     );
   }
 }
@@ -69,29 +87,25 @@ class _HeaderCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       flex: flex,
-      child: Padding(
-        padding: alignLeft ? EdgeInsets.only(left: 4.w) : EdgeInsets.zero,
-        child: Row(
-          mainAxisAlignment: alignLeft ? MainAxisAlignment.start : MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 14.sp, color: color),
-            SizedBox(width: 4.w),
-            Flexible(
-              child: Text(
-                text.toUpperCase(),
-                textAlign: alignLeft ? TextAlign.left : TextAlign.center,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 11.sp,
-                  letterSpacing: 1.0,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+      child: Row(
+        mainAxisAlignment: alignLeft ? MainAxisAlignment.start : MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 14.sp, color: color.withOpacity(0.9)),
+          SizedBox(width: 8.w),
+          Flexible(
+            child: Text(
+              text.toUpperCase(),
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.w900,
+                fontSize: 10.sp,
+                letterSpacing: 1.5,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

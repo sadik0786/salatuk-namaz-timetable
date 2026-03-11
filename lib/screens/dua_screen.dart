@@ -73,6 +73,39 @@ class _DuaScreenState extends State<DuaScreen> {
         "text":
             "رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا\n\nترجمہ: اے میرے رب! ان دونوں (والدین) پر رحم فرما جیسا کہ انھوں نے بچپن میں مجھے پالا۔",
       },
+      {
+        "title": "بیت الخلا (Toilet) میں داخل ہونے کی دعا",
+        "text":
+            "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ\n\nترجمہ: اے اللہ! میں خبیث جنوں اور جنیوں سے تیری پناہ مانگتا ہوں۔",
+      },
+      {
+        "title": "بیت الخلا سے نکلنے کی دعا",
+        "text": "غُفْرَانَكَ\n\nترجمہ: (اے اللہ) میں تیری بخشش کا طلبگار ہوں۔",
+      },
+      {
+        "title": "وضو کے بعد کی دعا",
+        "text":
+            "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ\n\nترجمہ: میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے، اس کا کوئی شریک نہیں، اور میں گواہی دیتا ہوں کہ محمد (صلی اللہ علیہ وسلم) اس کے بندے اور رسول ہیں۔",
+      },
+      {
+        "title": "لباس پہننے کی دعا",
+        "text":
+            "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ\n\nترجمہ: تمام تعریفیں اللہ کے لیے ہیں جس نے مجھے یہ کپڑا پہنایا اور میری کسی طاقت اور قوت کے بغیر مجھے یہ عطا فرمایا۔",
+      },
+      {
+        "title": "آئینہ دیکھنے کی دعا",
+        "text":
+            "اللَّهُمَّ أَنْتَ حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي\n\nترجمہ: اے اللہ! تو نے میری صورت اچھی بنائی ہے، پس میرے اخلاق بھی اچھے کر دے۔",
+      },
+      {
+        "title": "علم میں اضافے کی دعا",
+        "text": "رَّبِّ زِدْنِي عِلْمًا\n\nترجمہ: اے میرے رب! میرے علم میں اضافہ فرما۔",
+      },
+      {
+        "title": "دنیا و آخرت کی بھلائی کی دعا",
+        "text":
+            "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ\n\nترجمہ: اے ہمارے رب! ہمیں دنیا میں بھی بھلائی عطا فرما اور آخرت میں بھی بھلائی عطا فرما اور ہمیں آگ کے عذاب سے بچا۔",
+      },
     ],
     'Hindi': [
       {
@@ -125,6 +158,41 @@ class _DuaScreenState extends State<DuaScreen> {
         "text":
             "रَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا\n\nअनुवाद: रब्बिर्-हमहुमा कमा रब्बयानी सगीरा\nतर्जुमा: ऐ मेरे रब! उन दोनों (वालिदैन) पर रहम फरमा जैसा कि उन्होंने बचपन में मुझे पाला।",
       },
+      {
+        "title": "शौचालय (Toilet) में प्रवेश की दुआ",
+        "text":
+            "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ\n\nअनुवाद: अल्लाहुम्मा इन्नी अऊज़ु बिका मिनल खुबुसि वल खबाइसि\nतर्जुमा: ऐ अल्लाह! मैं खबीस और गंदे जिन्नों से तेरी पनाह मांगता हूँ।",
+      },
+      {
+        "title": "शौचालय से बाहर निकलने की दुआ",
+        "text":
+            "غُفْرَانَكَ\n\nअनुवाद: गुफ़रानका\nतर्जुमा: (ऐ अल्लाह) मैं तेरी माफी (बख्शिश) मांगता हूँ।",
+      },
+      {
+        "title": "वज़ू के बाद की दुआ",
+        "text":
+            "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ\n\nअनुवाद: अश्हदु अल्ला इलाहा इल्लल्लाहु वह्दहू ला शरीका लहू व अश्हदु अन्ना मुहम्मदं अब्दुहू व रसूलुह\nतर्जुमा: मैं गवाही देता हूँ कि अल्लाह के सिवा कोई माबूद नहीं, वो अकेला है, उसका कोई शरीक नहीं, और मैं गवाही देता हूँ कि मुहम्मद (सल्ल.) उसके बंदे और रसूल हैं।",
+      },
+      {
+        "title": "कपड़े पहनने की दुआ",
+        "text":
+            "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ\n\nअनुवाद: अल्हम्दु लिल्लाहिल-लज़ी कसानी हाज़ा व रज़क़नीहि मिन गैरि हवलिम-मिन्नी व ला कुव्वह\nतर्जुमा: सब तारीफें उस अल्लाह के लिए हैं जिसने मुझे ये लिबास पहनाया और मेरी किसी कोशिश और ताक़त के बगैर मुझे ये अता किया।",
+      },
+      {
+        "title": "आईना देखने की दुआ",
+        "text":
+            "اللَّهُمَّ أَنْتَ حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي\n\nअनुवाद: अल्लाहुम्मा अंता हस्सन्ता खल्की फ हस्सिन खुलुकी\nतर्जुमा: ऐ अल्लाह! तूने मेरी सूरत अच्छी बनाई है, मेरे अख़लाक़ भी अच्छे कर दे।",
+      },
+      {
+        "title": "इल्म (ज्ञान) में इज़ाफे की दुआ",
+        "text":
+            "رَّبِّ زِدْنِي عِلْمًا\n\nअनुवाद: रब्बि ज़िदनी इल्मा\nतर्जुमा: ऐ मेरे रब! मेरे इल्म (ज्ञान) में इज़ाफा फरमा।",
+      },
+      {
+        "title": "दुनिया और आख़िरत में भलाई की दुआ",
+        "text":
+            "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ\n\nअनुवाद: रब्बना आतिना फिद-दुनिया हसनतंव-वफ़िल आख़िरति हसनतंव-वकिना अज़ाबन्नार\nतर्जुमा: ऐ हमारे रब! हमें दुनिया में भी भलाई दे और आख़िरत में भी भलाई दे और हमें आग के अज़ाब से बचा।",
+      },
     ],
     'English': [
       {
@@ -176,6 +244,40 @@ class _DuaScreenState extends State<DuaScreen> {
         "title": "Dua For Parents",
         "text":
             "رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا\n\nRabbir hamhuma kama rabbayanee sagheera\nTranslation: My Lord, have mercy upon them as they brought me up [when I was] small.",
+      },
+      {
+        "title": "Entering Toilet",
+        "text":
+            "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ\n\nAllahumma innee a'oodhu bika minal-khubuthi wal-khaba-ith\nTranslation: O Allah, I seek refuge with You from all offensive and wicked things (evil spirits).",
+      },
+      {
+        "title": "Leaving Toilet",
+        "text": "غُفْرَانَكَ\n\nGhufranaka\nTranslation: I ask You (Allah) for forgiveness.",
+      },
+      {
+        "title": "After Wudu",
+        "text":
+            "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ\n\nAsh-hadu alla ilaha illallahu wahdahu la shareeka lahu wa ash-hadu anna Muhammadan 'abduhu wa Rasooluhu\nTranslation: I bear witness that none has the right to be worshipped but Allah alone, Who has no partner; and I bear witness that Muhammad is His slave and His Messenger.",
+      },
+      {
+        "title": "Wearing Clothes",
+        "text":
+            "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ\n\nAlhamdu lillahil-lathee kasanee hatha warazaqaneehi min ghayri hawlin minnee wala quwwatin\nTranslation: Praise be to Allah who has clothed me with this garment and provided it for me, with no power or might from myself.",
+      },
+      {
+        "title": "Looking in Mirror",
+        "text":
+            "اللَّهُمَّ أَنْتَ حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي\n\nAllahumma anta hassanta khalqi fahassin khuluqi\nTranslation: O Allah, just as You have made my external form beautiful, make my character beautiful as well.",
+      },
+      {
+        "title": "For Knowledge",
+        "text":
+            "رَّبِّ زِدْنِي عِلْمًا\n\nRabbi zidnee 'ilman\nTranslation: O my Lord, increase me in knowledge.",
+      },
+      {
+        "title": "For Success in World & Hereafter",
+        "text":
+            "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ\n\nRabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan waqina 'adhaban-nar\nTranslation: Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire.",
       },
     ],
   };
@@ -268,53 +370,19 @@ class _DuaScreenState extends State<DuaScreen> {
                 ),
 
                 const Divider(height: 1, thickness: 1, indent: 20, endIndent: 20),
-                // Dua list view... (rest of the code below expansion)
-                // Dua list
+                
+                // Dua List
                 Expanded(
                   child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                     itemCount: duas.length,
                     itemBuilder: (context, index) {
                       final dua = duas[index];
-                      return Card(
-                        elevation: 4,
-                        margin: const EdgeInsets.only(bottom: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Title
-                              SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  dua['title']!,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
-                                  ),
-                                  textDirection: _selectedLanguage == 'Urdu'
-                                      ? TextDirection.rtl
-                                      : TextDirection.ltr,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              // Text
-                              SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  dua['text']!,
-                                  style: const TextStyle(fontSize: 14, height: 1.4),
-                                  textDirection: _selectedLanguage == 'Urdu'
-                                      ? TextDirection.rtl
-                                      : TextDirection.ltr,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      return _DuaExpansionTile(
+                        dua: dua,
+                        isUrdu: _selectedLanguage == 'Urdu',
+                        isHindi: _selectedLanguage == 'Hindi',
+                        primaryColor: theme.colorScheme.primary,
                       );
                     },
                   ),
@@ -324,6 +392,222 @@ class _DuaScreenState extends State<DuaScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+class _DuaExpansionTile extends StatefulWidget {
+  final Map<String, String> dua;
+  final bool isUrdu;
+  final bool isHindi;
+  final Color primaryColor;
+
+  const _DuaExpansionTile({
+    required this.dua,
+    required this.isUrdu,
+    required this.isHindi,
+    required this.primaryColor,
+  });
+
+  @override
+  State<_DuaExpansionTile> createState() => _DuaExpansionTileState();
+}
+
+class _DuaExpansionTileState extends State<_DuaExpansionTile> with SingleTickerProviderStateMixin {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutCubic,
+      margin: EdgeInsets.only(bottom: 8.h),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.white.withOpacity(0.04) : Colors.white,
+        borderRadius: BorderRadius.circular(18.r),
+        boxShadow: [
+          BoxShadow(
+            color: _isExpanded ? Colors.blueGrey.withOpacity(0.1) : Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(
+          color: _isExpanded
+              ? Colors.blueGrey.withOpacity(0.2)
+              : theme.dividerColor.withOpacity(0.05),
+          width: 1.2,
+        ),
+      ),
+      child: Column(
+        children: [
+          // Header (Title) - Tighter Padding
+          InkWell(
+            onTap: () {
+              HapticFeedback.lightImpact();
+              setState(() => _isExpanded = !_isExpanded);
+            },
+            borderRadius: BorderRadius.circular(18.r),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(6.r),
+                    decoration: BoxDecoration(
+                      color: _isExpanded
+                          ? Colors.blueGrey.withOpacity(0.1)
+                          : Colors.grey.withOpacity(0.05),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.bookmarks_rounded,
+                      size: 16.sp,
+                      color: _isExpanded ? Colors.blueGrey : Colors.grey.shade400,
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      widget.dua['title']!,
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: _isExpanded ? FontWeight.w800 : FontWeight.w700,
+                        color: _isExpanded
+                            ? Colors.blueGrey.shade700
+                            : theme.colorScheme.onSurface.withOpacity(0.8),
+                        letterSpacing: -0.3,
+                      ),
+                      textDirection: widget.isUrdu ? TextDirection.rtl : TextDirection.ltr,
+                    ),
+                  ),
+                  AnimatedRotation(
+                    turns: _isExpanded ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 250),
+                    child: Icon(
+                      Icons.expand_more_rounded,
+                      size: 20.sp,
+                      color: _isExpanded ? Colors.blueGrey : Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Details (Expanded Content) - Minimalist Spacing
+          ClipRect(
+            child: AnimatedAlign(
+              alignment: Alignment.topCenter,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              heightFactor: _isExpanded ? 1.0 : 0.0,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 12.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Divider(height: 1),
+                    SizedBox(height: 10.h),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(12.r),
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey.withOpacity(0.02),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: SelectableText(
+                        widget.dua['text']!,
+                        style: TextStyle(fontSize: 14.sp, height: 1.6, fontWeight: FontWeight.w500),
+                        textAlign: widget.isUrdu ? TextAlign.right : TextAlign.left,
+                        textDirection: widget.isUrdu ? TextDirection.rtl : TextDirection.ltr,
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    // Action Buttons - Compact
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        _ActionButton(
+                          icon: Icons.content_copy_rounded,
+                          label: 'Copy',
+                          onTap: () {
+                            Clipboard.setData(
+                              ClipboardData(
+                                text: "${widget.dua['title']}\n\n${widget.dua['text']}",
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Dua copied".tr),
+                                duration: const Duration(seconds: 1),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(width: 8.w),
+                        _ActionButton(
+                          icon: Icons.ios_share_rounded,
+                          label: 'Share',
+                          onTap: () {
+                            Clipboard.setData(
+                              ClipboardData(
+                                text: "${widget.dua['title']}\n\n${widget.dua['text']}",
+                              ),
+                            );
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text("Link copied".tr)));
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _ActionButton({required this.icon, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 14.sp, color: Colors.blueGrey),
+            SizedBox(width: 4.w),
+            Text(
+              label.tr,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueGrey,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
