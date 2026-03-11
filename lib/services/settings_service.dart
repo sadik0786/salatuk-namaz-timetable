@@ -160,14 +160,13 @@ class SettingsService {
 
   static Future<Map<String, bool>> getPrayerNotifications() async {
     final prefs = await SharedPreferences.getInstance();
-    final master = prefs.getBool('show_prayer_notifications') ?? false;
     return {
-      'Fajr': master && (prefs.getBool('Fajr') ?? true),
-      'Dhuhr': master && (prefs.getBool('Dhuhr') ?? true),
-      'Asr': master && (prefs.getBool('Asr') ?? true),
-      'Maghrib': master && (prefs.getBool('Maghrib') ?? true),
-      'Isha': master && (prefs.getBool('Isha') ?? true),
-      'Jumah': master && (prefs.getBool('Dhuhr') ?? true), // Maps to Dhuhr naturally
+      'Fajr': prefs.getBool('Fajr') ?? true,
+      'Dhuhr': prefs.getBool('Dhuhr') ?? true,
+      'Asr': prefs.getBool('Asr') ?? true,
+      'Maghrib': prefs.getBool('Maghrib') ?? true,
+      'Isha': prefs.getBool('Isha') ?? true,
+      'Jumah': prefs.getBool('Dhuhr') ?? true, // Maps to Dhuhr naturally
     };
   }
 

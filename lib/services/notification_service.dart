@@ -70,30 +70,32 @@ class NotificationService {
 
     final prayerNotifications = await SettingsService.getPrayerNotifications();
 
-    // Channel creation (v4)
+    // Channel creation (v6)
     if (Platform.isAndroid) {
       final androidPlugin = _notificationsPlugin
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_azan_v5',
+          'salatuk_azan_v6',
           'Azan Alerts',
           description: 'Loud azan alerts at prayer times',
           importance: Importance.max,
           sound: RawResourceAndroidNotificationSound('azan'),
           playSound: true,
+          audioAttributesUsage: AudioAttributesUsage.alarm,
         ),
       );
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_beep_v5',
+          'salatuk_beep_v6',
           'Jamaat Alerts',
           description: 'Beep alerts for jamaat times',
           importance: Importance.max,
           sound: RawResourceAndroidNotificationSound('beep'),
           playSound: true,
+          audioAttributesUsage: AudioAttributesUsage.alarm,
         ),
       );
     }
@@ -112,7 +114,7 @@ class NotificationService {
             body: "It's time for $prayer prayer".tr,
             timeStr: azanTime,
             soundFile: 'azan',
-            channelId: 'salatuk_azan_v4',
+            channelId: 'salatuk_azan_v6',
           );
         }
 
@@ -125,7 +127,7 @@ class NotificationService {
             body: "Jamaat for $prayer is starting soon".tr,
             timeStr: jamaatTime,
             soundFile: 'beep',
-            channelId: 'salatuk_beep_v5',
+            channelId: 'salatuk_beep_v6',
           );
         }
       }

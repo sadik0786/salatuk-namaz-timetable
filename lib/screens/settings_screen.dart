@@ -75,6 +75,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _notifications[prayer] = value;
     });
+    // Reschedule immediately
+    Get.find<PrayerController>().refreshPrayerTimes();
   }
 
   void _changeLocation() {
@@ -150,19 +152,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SwitchListTile(
-                title: TrText("Ring Adhan time"),
+                title: TrText("Master Sound Toggle"),
+                subtitle: TrText("Enable or disable all Azan/Jamat sounds"),
                 value: isRingAtAdhan,
                 onChanged: (val) async {
                   await SettingsService.setRingAtAdhan(val);
                   setState(() => isRingAtAdhan = val);
-                  // Immediate re-scheduling
                   Get.find<PrayerController>().refreshPrayerTimes();
                 },
               ),
+              SwitchListTile(
+                title: TrText("Prayer Notifications"),
+                subtitle: TrText("Show/Hide individual prayer settings"),
+                value: showPrayerNotifications,
+                onChanged: (val) async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setBool('show_prayer_notifications', val);
+                  SettingsService.onSettingsChanged.value++;
+                  setState(() => showPrayerNotifications = val);
+                  Get.find<PrayerController>().refreshPrayerTimes();
+                },
+              ),
+              if (showPrayerNotifications)
+                ..._notifications.entries.map((entry) {
+                  return Padding(
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: SwitchListTile(
+                      dense: true,
+                      title: Text(entry.key.tr, style: TextStyle(fontSize: 14.sp)),
+                      value: entry.value,
+                      onChanged: (val) => _saveNotification(entry.key, val),
+                    ),
+                  );
+                }),
               ListTile(
-                leading: const Icon(Icons.timer),
-                title: TrText("Prayer Azan & Jamaat Time"),
-                subtitle: TrText("Override default API times"),
+                leading: const Icon(Icons.timer_outlined),
+                title: TrText("Azan & Jamaat Time"),
+                subtitle: TrText("Override default times"),
                 onTap: () => Get.to(() => const PrayerSettingsScreen()),
               ),
               const Divider(),
@@ -305,27 +331,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
               const Divider(),
-              SwitchListTile(
-                title: TrText("Prayer Notifications"),
-                subtitle: TrText("Ring when the prayer time matches"),
-                value: showPrayerNotifications,
-                onChanged: (val) async {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setBool('show_prayer_notifications', val);
-                  SettingsService.onSettingsChanged.value++;
-                  setState(() => showPrayerNotifications = val);
-                },
-              ),
-              if (showPrayerNotifications)
-                ..._notifications.entries.map((entry) {
-                  return SwitchListTile(
-                    title: TrText(entry.key),
-                    value: entry.value,
-                    onChanged: (val) {
-                      _saveNotification(entry.key, val);
-                    },
-                  );
-                }),
             ],
           );
         },
