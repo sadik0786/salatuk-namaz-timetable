@@ -20,42 +20,45 @@ class NamazTarikaScreen extends StatelessWidget {
               _buildNamazCard(
                 context,
                 'Fajr'.tr,
-                '2 Rakats Sunnah (Muakkadah)\n2 Rakats Fard\nTotal: 4 Rakats',
+                '2 Rakats Sunnah (Muakkadah)\n2 Rakats Fard\nTotal: 4 Rakats'.tr,
                 'نیت کرتا/کرتی ہوں میں ۲ رکعت فرض نماز فجر کی، واسطے اللہ تعالیٰ کے، منہ میرا طرف کعبہ شریف کے، اللہ اکبر۔',
                 'नीयत करता/करती हूँ मैं 2 रकात फ़र्ज़ नमाज़ फ़ज्र की, वास्ते अल्लाह तआला के, मुँह मेरा काबा शरीफ़ की तरफ़, अल्लाहु अकबर।',
               ),
               _buildNamazCard(
                 context,
                 'Dhuhr'.tr,
-                '4 Rakats Sunnah (Muakkadah)\n4 Rakats Fard\n2 Rakats Sunnah (Muakkadah)\n2 Rakats Nafl\nTotal: 12 Rakats',
+                '4 Rakats Sunnah (Muakkadah)\n4 Rakats Fard\n2 Rakats Sunnah (Muakkadah)\n2 Rakats Nafl\nTotal: 12 Rakats'
+                    .tr,
                 'نیت کرتا/کرتی ہوں میں ۴ رکعت فرض نماز ظہر کی، واسطے اللہ تعالیٰ کے، منہ میرا طرف کعبہ شریف کے، اللہ اکبر۔',
                 'नीयत करता/करती हूँ मैं 4 रकात फ़र्ज़ नमाज़ ज़ुहर की, वास्ते अल्लाह तआला के, मुँह मेरा काबा शरीफ़ की तरफ़, अल्लाहु अकबर।',
               ),
               _buildNamazCard(
                 context,
                 'Asr'.tr,
-                '4 Rakats Sunnah (Ghair Muakkadah)\n4 Rakats Fard\nTotal: 8 Rakats',
+                '4 Rakats Sunnah (Ghair Muakkadah)\n4 Rakats Fard\nTotal: 8 Rakats'.tr,
                 'نیت کرتا/کرتی ہوں میں ۴ رکعت فرض نماز عصر کی، واسطے اللہ تعالیٰ کے، منہ میرا طرف کعبہ شریف کے، اللہ اکبر۔',
                 'नीयत करता/करती हूँ मैं 4 रकात फ़र्ज़ नमाज़ असर की, वास्ते अल्लाह तआला के, मुँह मेरा काबा शरीफ़ की तरफ़, अल्लाहु अकबर।',
               ),
               _buildNamazCard(
                 context,
                 'Maghrib'.tr,
-                '3 Rakats Fard\n2 Rakats Sunnah (Muakkadah)\n2 Rakats Nafl\nTotal: 7 Rakats',
+                '3 Rakats Fard\n2 Rakats Sunnah (Muakkadah)\n2 Rakats Nafl\nTotal: 7 Rakats'.tr,
                 'نیت کرتا/کرتی ہوں میں ۳ رکعت فرض نماز مغرب کی، واسطے اللہ تعالیٰ کے، منہ میرا طرف کعبہ شریف کے، اللہ اکبر۔',
                 'नीयत करता/करती हूँ मैं 3 रकात फ़र्ज़ नमाज़ मग़रिब की, वास्ते अल्लाह तआला के, मुँह मेरा काबा शरीफ़ की तरफ़, अल्लाहु अकबर।',
               ),
               _buildNamazCard(
                 context,
                 'Isha'.tr,
-                '4 Rakats Sunnah (Ghair Muakkadah)\n4 Rakats Fard\n2 Rakats Sunnah (Muakkadah)\n2 Rakats Nafl\n3 Rakats Witr\n2 Rakats Nafl\nTotal: 17 Rakats',
+                '4 Rakats Sunnah (Ghair Muakkadah)\n4 Rakats Fard\n2 Rakats Sunnah (Muakkadah)\n2 Rakats Nafl\n3 Rakats Witr\n2 Rakats Nafl\nTotal: 17 Rakats'
+                    .tr,
                 'نیت کرتا/کرتی ہوں میں ۴ رکعت فرض نماز عشاء کی، واسطے اللہ تعالیٰ کے، منہ میرا طرف کعبہ شریف کے، اللہ اکبر۔\n\nنیت (وتر): نیت کرتا/کرتی ہوں میں ۳ رکعت واجب وتر عشاء کی، واسطے اللہ تعالیٰ کے، منہ میرا طرف کعبہ شریف کے، اللہ اکبر۔',
                 'फ़र्ज़ नीयत: नीयत करता/करती हूँ मैं 4 रकात फ़र्ज़ नमाज़ ईशा की, वास्ते अल्लाह तआला के, मुँह मेरा काबा शरीफ़ की तरफ़, अल्लाहु अकबर।\n\nवित्र नीयत: नीयत करता/करती हूँ मैं 3 रकात वाजिब वित्र ईशा की, वास्ते अल्लाह तआला के, मुँह मेरा काबा शरीफ़ की तरफ़, अल्लाहु अकबर।',
               ),
               _buildNamazCard(
                 context,
                 'Jummah'.tr,
-                '4 Rakats Sunnah (Muakkadah)\n2 Rakats Fard\n4 Rakats Sunnah (Muakkadah)\n2 Rakats Sunnah (Muakkadah)\n2 Rakats Nafl\nTotal: 14 Rakats',
+                '4 Rakats Sunnah (Muakkadah)\n2 Rakats Fard\n4 Rakats Sunnah (Muakkadah)\n2 Rakats Sunnah (Muakkadah)\n2 Rakats Nafl\nTotal: 14 Rakats'
+                    .tr,
                 'نیت کرتا/کرتی ہوں میں ۲ رکعت فرض نماز جمعہ کی، پیچھے اس امام کے، واسطے اللہ تعالیٰ کے، منہ میرا طرف کعبہ شریف کے، اللہ اکبر۔',
                 'नीयत करता/करती हूँ मैं 2 रकात फ़र्ज़ नमाज़ जुम्मा की, पीछे इस इमाम के, वास्ते अल्लाह तआला के, मुँह मेरा काबा शरीफ़ की तरफ़, अल्लाहु अकबर।',
               ),

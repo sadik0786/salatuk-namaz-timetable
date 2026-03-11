@@ -13,7 +13,7 @@ class DuaScreen extends StatefulWidget {
 }
 
 class _DuaScreenState extends State<DuaScreen> {
-  String _selectedLanguage = 'English';
+  String _selectedLanguage = 'Urdu';
 
   @override
   void initState() {

@@ -6,6 +6,7 @@ import 'package:namaz_timetable/screens/dashboard_screen.dart';
 import 'package:namaz_timetable/screens/tasbih_screen.dart';
 import 'package:namaz_timetable/widgets/app_drawer.dart';
 import 'package:namaz_timetable/services/settings_service.dart';
+import 'package:namaz_timetable/services/localization_service.dart';
 import 'package:namaz_timetable/widgets/tr_text.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -175,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
               items: <String>['English', 'Urdu', 'Hindi'].map<DropdownMenuItem<String>>((
                 String value,
               ) {
-                return DropdownMenuItem<String>(value: value, child: Text(value));
+                return DropdownMenuItem<String>(value: value, child: Text(value.tr));
               }).toList(),
             ),
           );

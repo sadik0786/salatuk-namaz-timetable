@@ -74,11 +74,11 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
     final hNow = HijriCalendar.fromDate(adjustedDate);
 
     // Use local calculation with offset for maximum reliability and synchronization with settings
-    String displayHijriDate = "${hNow.hDay} ${hNow.longMonthName} ${hNow.hYear}";
+    String displayHijriDate = "${hNow.hDay} ${hNow.longMonthName.tr} ${hNow.hYear}";
 
     // Improve formatting if it's Ramadan
     if (hNow.hMonth == 9) {
-      displayHijriDate = "${hNow.hDay} Ramzan ${hNow.hYear}";
+      displayHijriDate = "${hNow.hDay} ${'Ramzan'.tr} ${hNow.hYear}";
     }
 
     final theme = Theme.of(context);
@@ -118,7 +118,7 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      dayFull.toUpperCase(),
+                      dayFull.tr.toUpperCase(),
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w900,

@@ -19,8 +19,9 @@ class FatihaTarikaScreen extends StatelessWidget {
             children: [
               _buildStepCard(
                 context,
-                title: 'Step 1: Durood Shareef',
-                instruction: 'Read Durood Shareef 3, 5, 7, or 11 times. (e.g., Durood-e-Ibrahimi)',
+                title: 'Step 1: Durood Shareef'.tr,
+                instruction:
+                    'Read Durood Shareef 3, 5, 7, or 11 times. (e.g., Durood-e-Ibrahimi)'.tr,
                 arabicText:
                     'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ.\nاللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ',
                 hindiText:
@@ -30,8 +31,8 @@ class FatihaTarikaScreen extends StatelessWidget {
               ),
               _buildStepCard(
                 context,
-                title: 'Step 2: Surah Al-Kafirun (1 time)',
-                instruction: 'Read Surah Al-Kafirun 1 time.',
+                title: 'Step 2: Surah Al-Kafirun (1 time)'.tr,
+                instruction: 'Read Surah Al-Kafirun 1 time.'.tr,
                 arabicText:
                     'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nقُلْ يَا أَيُّهَا الْكَافِرُونَ\nلَا أَعْبُدُ مَا تَعْبُدُونَ\nوَلَا أَنْتُمْ عَابِدُونَ مَا أَعْبُدُ\nوَلَا أَنَا عَابِدٌ مَا عَبَدْتُمْ\nوَلَا أَنْتُمْ عَابِدُونَ مَا أَعْبُدُ\nلَكُمْ دِينُكُمْ وَلِيَ دِينِ',
                 hindiText:
@@ -41,8 +42,8 @@ class FatihaTarikaScreen extends StatelessWidget {
               ),
               _buildStepCard(
                 context,
-                title: 'Step 3: Surah Al-Ikhlas (3 times)',
-                instruction: 'Read Surah Al-Ikhlas (Qul Huwa Allahu Ahad) 3 times.',
+                title: 'Step 3: Surah Al-Ikhlas (3 times)'.tr,
+                instruction: 'Read Surah Al-Ikhlas (Qul Huwa Allahu Ahad) 3 times.'.tr,
                 arabicText:
                     'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ\nاللَّهُ الصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ',
                 hindiText:
@@ -52,8 +53,8 @@ class FatihaTarikaScreen extends StatelessWidget {
               ),
               _buildStepCard(
                 context,
-                title: 'Step 4: Surah Al-Falaq (1 time)',
-                instruction: 'Read Surah Al-Falaq 1 time.',
+                title: 'Step 4: Surah Al-Falaq (1 time)'.tr,
+                instruction: 'Read Surah Al-Falaq 1 time.'.tr,
                 arabicText:
                     'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nقُل| أَعُوذُ بِرَبِّ الْفَلَقِ\nمِنْ شَرِّ مَا خَلَقَ\nوَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ\nوَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ',
                 hindiText:
@@ -63,8 +64,8 @@ class FatihaTarikaScreen extends StatelessWidget {
               ),
               _buildStepCard(
                 context,
-                title: 'Step 5: Surah An-Nas (1 time)',
-                instruction: 'Read Surah An-Nas 1 time.',
+                title: 'Step 5: Surah An-Nas (1 time)'.tr,
+                instruction: 'Read Surah An-Nas 1 time.'.tr,
                 arabicText:
                     'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nمَلِكِ النَّاسِ\nإِلَٰهِ النَّاسِ\nمِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nمِنَ الْجِنَّةِ وَالنَّاسِ',
                 hindiText:
@@ -74,8 +75,8 @@ class FatihaTarikaScreen extends StatelessWidget {
               ),
               _buildStepCard(
                 context,
-                title: 'Step 6: Surah Al-Fatiha (1 time)',
-                instruction: 'Read Surah Al-Fatiha (Alhamdulillah) 1 time.',
+                title: 'Step 6: Surah Al-Fatiha (1 time)'.tr,
+                instruction: 'Read Surah Al-Fatiha (Alhamdulillah) 1 time.'.tr,
                 arabicText:
                     'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nالرَّحْمَٰنِ الرَّحِيمِ\nمَالِكِ يَوْمِ الدِّينِ\nإِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\nاهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ\nصِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ',
                 hindiText:
@@ -85,8 +86,8 @@ class FatihaTarikaScreen extends StatelessWidget {
               ),
               _buildStepCard(
                 context,
-                title: 'Step 7: Surah Al-Baqarah (Beginning)',
-                instruction: 'Read the first 5 Ayats of Surah Al-Baqarah.',
+                title: 'Step 7: Surah Al-Baqarah (Beginning)'.tr,
+                instruction: 'Read the first 5 Ayats of Surah Al-Baqarah.'.tr,
                 arabicText:
                     'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nالم ۝ ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِلْمُتَّقِينَ ۝ الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنْفِقُونَ ۝ وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنْزِلَ إِلَيْكَ وَمَا أُنْزِلَ مِنْ قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ ۝ أُولَٰئِكَ عَلَىٰ هُدًى مِنْ رَبِّهِمْ ۖ وَأُولَٰئِكَ هُمُ الْمُفْلِحُونَ',
                 hindiText:
@@ -96,9 +97,10 @@ class FatihaTarikaScreen extends StatelessWidget {
               ),
               _buildStepCard(
                 context,
-                title: 'Step 8: Final Durood and Dua',
+                title: 'Step 8: Final Durood and Dua'.tr,
                 instruction:
-                    'Recite Durood Shareef again 3, 5, 7 or 11 times. Then raise your hands in Dua and ask Allah to accept it and present the reward (Esaal-e-Sawab) to the beloved Prophet (PBUH), his family, companions, all Awliya Allah, and all deceased Muslims.',
+                    'Recite Durood Shareef again 3, 5, 7 or 11 times. Then raise your hands in Dua and ask Allah to accept it and present the reward (Esaal-e-Sawab) to the beloved Prophet (PBUH), his family, companions, all Awliya Allah, and all deceased Muslims.'
+                        .tr,
                 hindiText:
                     'फिर आख़िर में दरूद शरीफ़ 3, 5, 7 या 11 बार पढ़ें। फिर हाथ उठाकर ईसाल-ए-सवाब की दुआ माँगें।',
               ),

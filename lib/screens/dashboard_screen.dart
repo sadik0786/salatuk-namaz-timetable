@@ -120,6 +120,98 @@ class _DashboardScreenState extends State<DashboardScreen> {
         'color2': '#E94057',
       });
 
+      // 4. Ayatul Kursi
+      fetchedCards.add({
+        'type': 'Ayatul Kursi',
+        'arabic':
+            'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ',
+        'translation':
+            'Allah - there is no deity except Him, the Ever-Living, the Sustainer of [all] existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is [presently] before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great.',
+        'reference': 'Surah Al-Baqarah, 2:255',
+        'color1': '#4e54c8',
+        'color2': '#8f94fb',
+      });
+
+      // 5. Surah Al-Ikhlas
+      fetchedCards.add({
+        'type': 'Surah Ikhlas',
+        'arabic':
+            'قُلْ هُوَ اللَّهُ أَحَدٌ اللَّهُ الصَّمَدُ لَمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',
+        'translation':
+            'Say, "He is Allah, [who is] One, Allah, the Eternal Refuge. He neither begets nor is born, Nor is there to Him any equivalent."',
+        'reference': 'Surah Al-Ikhlas, 112',
+        'color1': '#F2994A',
+        'color2': '#F2C94C',
+      });
+
+      // 6. Surah Al-Falaq
+      fetchedCards.add({
+        'type': 'Surah Falak',
+        'arabic':
+            'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ مِن شَرِّ مَا خَلَقَ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ',
+        'translation':
+            'Say, "I seek refuge in the Lord of daybreak From the evil of that which He created And from the evil of darkness when it settles And from the evil of the blowers in knots And from the evil of an envier when he envies."',
+        'reference': 'Surah Al-Falaq, 113',
+        'color1': '#00b09b',
+        'color2': '#96c93d',
+      });
+
+      // 7. Surah An-Nas
+      fetchedCards.add({
+        'type': 'Surah An-Nas',
+        'arabic':
+            'قُلْ أَعُوذُ بِرَبِّ النَّاسِ مَلِكِ النَّاسِ إِلَٰهِ النَّاسِ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ مِنَ الْجِنَّةِ وَالنَّاسِ',
+        'translation':
+            'Say, "I seek refuge in the Lord of mankind, The Sovereign of mankind, The God of mankind, From the evil of the retreating whisperer - Who whispers [evil] into the breasts of mankind - From among the jinn and mankind."',
+        'reference': 'Surah An-Nas, 114',
+        'color1': '#e65c00',
+        'color2': '#F9D423',
+      });
+
+      // 8. Surah Al-Kafirun
+      fetchedCards.add({
+        'type': 'Surah Al-Kafirun',
+        'arabic':
+            'قُلْ يَا أَيُّهَا الْكَافِرُونَ لَا أَعْبُدُ مَا تَعْبُدُونَ وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ وَلَا أَنَا عَابِدٌ مَا عَبَدتُّمْ وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ لَكُمْ دِينُكُمْ وَلِيَ دِينِ',
+        'translation':
+            'Say, "O disbelievers, I do not worship what you worship. Nor are you worshippers of what I worship. Nor will I be a worshipper of what you have worshipped. Nor will you be worshippers of what I worship. For you is your religion, and for me is my religion."',
+        'reference': 'Surah Al-Kafirun, 109',
+        'color1': '#1e3c72',
+        'color2': '#2a5298',
+      });
+
+      // 9. Surah Al-Fatiha
+      fetchedCards.add({
+        'type': 'Surah Al-Fatiha',
+        'arabic':
+            'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ الرَّحْمَٰنِ الرَّحِيمِ مَالِكِ يَوْمِ الدِّينِ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ',
+        'translation':
+            'In the name of Allah, the Entirely Merciful, the Especially Merciful. [All] praise is [due] to Allah, Lord of the worlds - The Entirely Merciful, the Especially Merciful, Sovereign of the Day of Recompense. It is You we worship and You we ask for help. Guide us to the straight path - The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.',
+        'reference': 'Surah Al-Fatiha, 1',
+        'color1': '#0f0c29',
+        'color2': '#302b63',
+      });
+
+      // 10. Dua for Knowledge
+      fetchedCards.add({
+        'type': 'Daily Dua',
+        'arabic': 'رَّبِّ زِدْنِي عِلْمًا',
+        'translation': 'My Lord, increase me in knowledge.',
+        'reference': 'Surah Ta-Ha, 20:114',
+        'color1': '#000000',
+        'color2': '#434343',
+      });
+
+      // 11. Dua for Parents
+      fetchedCards.add({
+        'type': 'Daily Dua',
+        'arabic': 'رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا',
+        'translation': 'My Lord, have mercy upon them as they brought me up [when I was] small.',
+        'reference': 'Surah Al-Isra, 17:24',
+        'color1': '#6a11cb',
+        'color2': '#2575fc',
+      });
+
       if (!mounted) return;
       setState(() {
         dailyCards = fetchedCards;
@@ -175,7 +267,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
 
         final model = controller.prayerTimes.value;
-        if (model == null) return const Center(child: Text("Error loading times"));
+        if (model == null) return Center(child: Text("Error loading times".tr));
 
         final sunriseTime = _formatTime(model.timings['Sunrise'] ?? '');
         final sunsetTime = _formatTime(model.timings['Sunset'] ?? model.timings['Maghrib'] ?? '');
@@ -267,7 +359,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       Icon(typeIcon, size: 14.sp, color: Colors.white),
                                       SizedBox(width: 4.w),
                                       Text(
-                                        cardData['type']!,
+                                        cardData['type']!.tr,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -292,7 +384,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                 SizedBox(height: 8.h),
                                 Text(
-                                  cardData['translation']!,
+                                  cardData['translation']!.tr,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,

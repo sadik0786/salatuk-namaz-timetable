@@ -125,7 +125,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               width: 40.w,
               child: Center(
                 child: Text(
-                  d,
+                  d.tr,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
@@ -211,7 +211,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           Container(width: 1.w, height: 30.h, color: primaryColor.withOpacity(0.2)),
           _buildDateColumn(
             "Hijri",
-            "${_hijriDate.hDay} ${_hijriDate.longMonthName} ${_hijriDate.hYear}",
+            "${_hijriDate.hDay} ${_hijriDate.longMonthName.tr} ${_hijriDate.hYear}",
             isDark,
           ),
         ],

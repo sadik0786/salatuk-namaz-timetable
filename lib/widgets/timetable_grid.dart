@@ -233,7 +233,7 @@ class _TimetableGridState extends State<TimetableGrid> {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            "End - $end",
+                            "${"End".tr} - $end",
                             style: TextStyle(
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w600,

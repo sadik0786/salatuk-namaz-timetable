@@ -21,7 +21,7 @@ class PrayerScreen extends StatelessWidget {
 
         final model = controller.prayerTimes.value;
         if (model == null) {
-          return const Center(child: Text("Error loading times"));
+          return Center(child: Text("Error loading times".tr));
         }
 
         return Column(

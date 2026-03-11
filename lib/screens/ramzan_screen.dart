@@ -326,7 +326,7 @@ class _RamzanScreenState extends State<RamzanScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "${date['gregorian']['weekday']['en']}, $gregorianDate",
+                                            "${date['gregorian']['weekday']['en'].toString().tr}, $gregorianDate",
                                             style: TextStyle(
                                               color: Colors.grey.shade600,
                                               fontSize: 13,
