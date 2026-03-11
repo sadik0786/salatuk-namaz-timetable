@@ -6,6 +6,7 @@ import 'package:namaz_timetable/services/prayer_time_service.dart';
 import 'package:namaz_timetable/services/settings_service.dart';
 import 'package:namaz_timetable/services/notification_service.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:namaz_timetable/services/connectivity_service.dart';
 
 class PrayerController extends GetxController {
   final _prayerService = PrayerTimeService(city: "Mumbai", country: "India");
@@ -115,6 +116,8 @@ class PrayerController extends GetxController {
       _updateNextPrayer();
     } catch (e) {
       debugPrint("Error in PrayerController refresh: $e");
+      // Show internet error if needed
+      Get.find<ConnectivityService>().checkInitialStatus();
     } finally {
       isLoading(false);
     }

@@ -8,6 +8,7 @@ import 'package:namaz_timetable/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:namaz_timetable/controllers/prayer_controller.dart';
 import 'package:namaz_timetable/services/notification_service.dart';
+import 'package:namaz_timetable/services/connectivity_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +18,9 @@ void main() async {
   await SettingsService.loadThemeMode();
   await SettingsService.loadLanguage();
 
-  // Initialize Controller
+  // Initialize Controllers and Services
   Get.put(PrayerController());
+  Get.put(ConnectivityService());
 
   runApp(const MyApp());
 }

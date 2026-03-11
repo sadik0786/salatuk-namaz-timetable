@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:namaz_timetable/screens/home_screen.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -58,14 +59,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // Navigate to home screen after 3 seconds
     Future.delayed(const Duration(milliseconds: 3000), () {
       if (mounted) {
-        Navigator.of(context).pushReplacement(
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => const HomeScreen(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            transitionDuration: const Duration(milliseconds: 800),
-          ),
+        Get.off(
+          () => const HomeScreen(),
+          transition: Transition.fade,
+          duration: const Duration(milliseconds: 800),
         );
       }
     });
