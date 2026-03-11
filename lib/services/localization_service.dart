@@ -85,6 +85,9 @@ class AppTranslations extends Translations {
       'Asr End': 'Asr End',
       'Maghrib End': 'Maghrib End',
       'Isha End': 'Isha End',
+      'SubhanAllah': 'SubhanAllah',
+      'Alhamdulillah': 'Alhamdulillah',
+      'Allahu Akbar': 'Allahu Akbar',
     },
     'ur': {
       'Timetable': 'ٹائم ٹیبل',
@@ -150,6 +153,9 @@ class AppTranslations extends Translations {
       'Are you sure you want to reset your lifetime tasbih progress?':
           'کیا آپ واقعی اپنی زندگی بھر کی تسبیح کی پیشرفت کو ری سیٹ کرنا چاہتے ہیں؟',
       'Cancel': 'منسوخ کریں',
+      'SubhanAllah': 'سبحان اللہ',
+      'Alhamdulillah': 'الحمدللہ',
+      'Allahu Akbar': 'اللہ اکبر',
     },
     'hi': {
       'Timetable': 'समय-सारणी',
@@ -215,6 +221,9 @@ class AppTranslations extends Translations {
       'Are you sure you want to reset your lifetime tasbih progress?':
           'क्या आप वाकई अपनी जीवन भर की तस्बीह प्रोग्रेस को रीसेट करना चाहते हैं?',
       'Cancel': 'रद्द करें',
+      'SubhanAllah': 'सुभानअल्लाह',
+      'Alhamdulillah': 'अल्हम्दुलिल्लाह',
+      'Allahu Akbar': 'अल्लाहु अकबर',
     },
   };
 }
