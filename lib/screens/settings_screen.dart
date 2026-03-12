@@ -129,7 +129,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               ListTile(
                 leading: const Icon(Icons.location_on),
-                title: Text("${'Location: '.tr} $currentCity, $currentCountry"),
+                title: Text("$currentCity, $currentCountry"),
                 trailing: const Icon(Icons.edit),
                 onTap: _changeLocation,
               ),

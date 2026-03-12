@@ -37,7 +37,9 @@ class NotificationService {
       onDidReceiveNotificationResponse: (details) async {
         if (details.payload == 'stop_sound') {
           // Attempting to stop player sound if it was test sound
-          Get.find<PrayerController>().stopTestSound();
+          if (Get.isRegistered<PrayerController>()) {
+            Get.find<PrayerController>().stopTestSound();
+          }
           // Canceling all stops the notification-based sound on many Android versions
           await stopAllSounds();
         }
@@ -70,32 +72,36 @@ class NotificationService {
 
     final prayerNotifications = await SettingsService.getPrayerNotifications();
 
-    // Channel creation (v6)
+    // Channel creation (v7 - recreation forced)
     if (Platform.isAndroid) {
       final androidPlugin = _notificationsPlugin
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_azan_v6',
+          'salatuk_azan_v7',
           'Azan Alerts',
           description: 'Loud azan alerts at prayer times',
           importance: Importance.max,
           sound: RawResourceAndroidNotificationSound('azan'),
           playSound: true,
           audioAttributesUsage: AudioAttributesUsage.alarm,
+          enableVibration: true,
+          showBadge: true,
         ),
       );
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_beep_v6',
+          'salatuk_beep_v7',
           'Jamaat Alerts',
           description: 'Beep alerts for jamaat times',
           importance: Importance.max,
           sound: RawResourceAndroidNotificationSound('beep'),
           playSound: true,
           audioAttributesUsage: AudioAttributesUsage.alarm,
+          enableVibration: true,
+          showBadge: true,
         ),
       );
     }
@@ -114,7 +120,7 @@ class NotificationService {
             body: "It's time for $prayer prayer".tr,
             timeStr: azanTime,
             soundFile: 'azan',
-            channelId: 'salatuk_azan_v6',
+            channelId: 'salatuk_azan_v7',
           );
         }
 
@@ -127,7 +133,7 @@ class NotificationService {
             body: "Jamaat for $prayer is starting soon".tr,
             timeStr: jamaatTime,
             soundFile: 'beep',
-            channelId: 'salatuk_beep_v6',
+            channelId: 'salatuk_beep_v7',
           );
         }
       }
@@ -177,9 +183,11 @@ class NotificationService {
         playSound: true,
         category: AndroidNotificationCategory.alarm,
         audioAttributesUsage: AudioAttributesUsage.alarm,
+        visibility: NotificationVisibility.public,
         fullScreenIntent: true,
-        ongoing: true, // This helps keep it visible for the user to tap
+        ongoing: true, // Keep it visible until dismissed or timed out
         autoCancel: true,
+        timeoutAfter: 180000, // Optional: auto-stop after 3 minutes if not handled
       );
 
       await _notificationsPlugin.zonedSchedule(

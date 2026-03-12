@@ -82,14 +82,7 @@ flutter:
     - assets/images/app_icon.png
     - assets/images/kaaba.jpg
     - assets/images/madina.jpg
-    - assets/images/ramzan_banner.png
-    - assets/images/durood.png
-    - assets/images/kafirun.png
-    - assets/images/ikhlas.png
-    - assets/images/falaq.png
-    - assets/images/nas.png
-    - assets/images/fatiha.png
-    - assets/images/baqarah.png
+    - assets/images/ramzan_banner.jpg
     - assets/sounds/
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -49,9 +49,14 @@ class PrayerController extends GetxController {
     SettingsService.onLocationChanged.addListener(_onLocationChanged);
 
     // Periodic timer to update status and check for sound playback (foreground)
-    _nextPrayerTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
+    _nextPrayerTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      final now = DateTime.now();
       _updateNextPrayer();
-      _checkAndPlayPrayerSounds();
+      
+      // Check for prayer sounds only at the start of each minute
+      if (now.second == 0) {
+        _checkAndPlayPrayerSounds();
+      }
     });
   }
 

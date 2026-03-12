@@ -88,22 +88,20 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 turns: _rotationAnimation,
                 child: Container(
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                        blurRadius: 40,
-                        spreadRadius: 10,
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                        blurRadius: 30,
+                        spreadRadius: 5,
                       ),
                     ],
                   ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/app_icon.png',
-                      width: 160.w,
-                      height: 160.w,
-                      fit: BoxFit.cover,
-                    ),
+                  child: Image.asset(
+                    'assets/images/app_icon.png',
+                    width: 160.w,
+                    height: 160.w,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
