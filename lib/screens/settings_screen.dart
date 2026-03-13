@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:namaz_timetable/screens/prayer_settings_screen.dart';
+import 'package:namaz_timetable/services/notification_service.dart';
 import 'package:namaz_timetable/services/settings_service.dart';
 import 'package:namaz_timetable/controllers/prayer_controller.dart';
 import 'package:namaz_timetable/widgets/common_app_bar.dart';
 import 'package:namaz_timetable/widgets/settings_modal.dart';
-import 'package:namaz_timetable/widgets/tr_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -119,146 +119,149 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
       appBar: CommonAppBar(title: "Settings".tr),
       body: ValueListenableBuilder<String>(
         valueListenable: SettingsService.languageNotifier,
         builder: (context, lang, _) {
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
             children: [
-              ListTile(
-                leading: const Icon(Icons.location_on),
-                title: Text("$currentCity, $currentCountry"),
-                trailing: const Icon(Icons.edit),
-                onTap: _changeLocation,
-              ),
-              const Divider(),
-              TrText(
-                "Appearance",
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SwitchListTile(
-                title: TrText("Dark Mode"),
-                value: isDarkMode,
-                onChanged: (val) async {
-                  await SettingsService.setThemeMode(val);
-                  setState(() => isDarkMode = val);
-                },
-              ),
-              const Divider(),
-              TrText(
-                "Alarm & Times",
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SwitchListTile(
-                title: TrText("Master Sound Toggle"),
-                subtitle: TrText("Enable or disable all Azan/Jamat sounds"),
-                value: isRingAtAdhan,
-                onChanged: (val) async {
-                  await SettingsService.setRingAtAdhan(val);
-                  setState(() => isRingAtAdhan = val);
-                  Get.find<PrayerController>().refreshPrayerTimes();
-                },
-              ),
-              SwitchListTile(
-                title: TrText("Prayer Notifications"),
-                subtitle: TrText("Show/Hide individual prayer settings"),
-                value: showPrayerNotifications,
-                onChanged: (val) async {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setBool('show_prayer_notifications', val);
-                  SettingsService.onSettingsChanged.value++;
-                  setState(() => showPrayerNotifications = val);
-                  Get.find<PrayerController>().refreshPrayerTimes();
-                },
-              ),
-              if (showPrayerNotifications)
-                ..._notifications.entries.map((entry) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: SwitchListTile(
-                      dense: true,
-                      title: Text(entry.key.tr, style: TextStyle(fontSize: 14.sp)),
+              // Header / Location Section
+              _buildSectionTitle("Current Location".tr),
+              _buildLocationCard(isDark, theme),
+
+              SizedBox(height: 24.h),
+
+              // Appearance Section
+              _buildSectionTitle("General".tr),
+              _buildGroupCard(isDark, [
+                _SettingToggle(
+                  icon: Icons.dark_mode_outlined,
+                  title: "Dark Mode".tr,
+                  value: isDarkMode,
+                  onChanged: (val) async {
+                    await SettingsService.setThemeMode(val);
+                    setState(() => isDarkMode = val);
+                  },
+                ),
+                _SettingAction(
+                  icon: Icons.language_outlined,
+                  title: "Language".tr,
+                  subtitle: lang,
+                  onTap: () => _showLanguageDialog(context),
+                ),
+              ]),
+
+              SizedBox(height: 24.h),
+
+              // Sounds & Fixes Section
+              _buildSectionTitle("Sounds & Fixes".tr),
+              _buildGroupCard(isDark, [
+                _SettingToggle(
+                  icon: Icons.volume_up_outlined,
+                  title: "Master Sound Toggle".tr,
+                  subtitle: "Enable all Azan & Jamaat sounds".tr,
+                  value: isRingAtAdhan,
+                  onChanged: (val) async {
+                    await SettingsService.setRingAtAdhan(val);
+                    setState(() => isRingAtAdhan = val);
+                    Get.find<PrayerController>().refreshPrayerTimes();
+                  },
+                ),
+                _SettingAction(
+                  icon: Icons.battery_alert_outlined,
+                  iconColor: Colors.orangeAccent,
+                  title: "Fix Background Sound".tr,
+                  subtitle: "Enable unrestricted battery".tr,
+                  onTap: () => NotificationService.requestBatteryOptimization(),
+                ),
+                _SettingAction(
+                  icon: Icons.alarm_on_outlined,
+                  iconColor: Colors.redAccent,
+                  title: "Alarms & Reminders".tr,
+                  subtitle: "Required for exact timing".tr,
+                  trailing: FutureBuilder<bool>(
+                    future: NotificationService.isExactAlarmPermissionGranted(),
+                    builder: (context, snapshot) {
+                      final isGranted = snapshot.data ?? false;
+                      return Icon(
+                        isGranted ? Icons.check_circle : Icons.error_outline,
+                        color: isGranted ? Colors.green : Colors.redAccent,
+                        size: 20.sp,
+                      );
+                    },
+                  ),
+                  onTap: () => NotificationService.requestExactAlarmPermission(),
+                ),
+                _SettingAction(
+                  icon: Icons.timer_outlined,
+                  title: "Adjust Prayer Times".tr,
+                  subtitle: "Override Azan & Jamaat".tr,
+                  onTap: () => Get.to(() => const PrayerSettingsScreen()),
+                ),
+              ]),
+
+              SizedBox(height: 24.h),
+
+              // Notifications Section
+              _buildSectionTitle("Notifications".tr),
+              _buildGroupCard(isDark, [
+                _SettingToggle(
+                  icon: Icons.notifications_none_outlined,
+                  title: "Individual Prayer Settings".tr,
+                  value: showPrayerNotifications,
+                  onChanged: (val) async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setBool('show_prayer_notifications', val);
+                    SettingsService.onSettingsChanged.value++;
+                    setState(() => showPrayerNotifications = val);
+                    Get.find<PrayerController>().refreshPrayerTimes();
+                  },
+                ),
+                if (showPrayerNotifications)
+                  ..._notifications.entries.map((entry) {
+                    return _SettingToggle(
+                      isDense: true,
+                      title: entry.key.tr,
                       value: entry.value,
                       onChanged: (val) => _saveNotification(entry.key, val),
-                    ),
-                  );
-                }),
-              ListTile(
-                leading: const Icon(Icons.timer_outlined),
-                title: TrText("Azan & Jamaat Time"),
-                subtitle: TrText("Override default times"),
-                onTap: () => Get.to(() => const PrayerSettingsScreen()),
-              ),
-              const Divider(),
-              SwitchListTile(
-                title: TrText("Prayer Calculation"),
-                subtitle: TrText("Show advanced settings"),
-                value: showAdvancedCalculation,
-                onChanged: (val) async {
-                  await SettingsService.setShowAdvancedCalculation(val);
-                  setState(() => showAdvancedCalculation = val);
-                },
-              ),
-              if (showAdvancedCalculation) ...[
-                ListTile(
-                  title: TrText("Calculation Method"),
-                  subtitle: DropdownButton<int>(
-                    isExpanded: true,
+                    );
+                  }),
+              ]),
+
+              SizedBox(height: 24.h),
+
+              // Advanced Section
+              _buildSectionTitle("Advanced Configuration".tr),
+              _buildGroupCard(isDark, [
+                _SettingToggle(
+                  icon: Icons.settings_suggest_outlined,
+                  title: "Prayer Calculation".tr,
+                  subtitle: "Advanced parameters".tr,
+                  value: showAdvancedCalculation,
+                  onChanged: (val) async {
+                    await SettingsService.setShowAdvancedCalculation(val);
+                    setState(() => showAdvancedCalculation = val);
+                  },
+                ),
+                if (showAdvancedCalculation) ...[
+                  _SettingDropdown<int>(
+                    title: "Calculation Method".tr,
                     value: calculationMethod,
                     items: [
-                      DropdownMenuItem(
-                        value: 1,
-                        child: Text(
-                          "University of Islamic Sciences, Karachi",
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: 2,
-                        child: Text(
-                          "Islamic Society of North America (ISNA)",
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: 3,
-                        child: Text("Muslim World League", style: TextStyle(fontSize: 12.sp)),
-                      ),
-                      DropdownMenuItem(
-                        value: 4,
-                        child: Text(
-                          "Umm Al-Qura University, Makkah",
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: 5,
-                        child: Text(
-                          "Egyptian General Authority of Survey",
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: 8,
-                        child: Text("Gulf Region", style: TextStyle(fontSize: 12.sp)),
-                      ),
-                      DropdownMenuItem(
-                        value: 9,
-                        child: Text("Kuwait", style: TextStyle(fontSize: 12.sp)),
-                      ),
-                      DropdownMenuItem(
-                        value: 10,
-                        child: Text("Qatar", style: TextStyle(fontSize: 12.sp)),
-                      ),
-                      DropdownMenuItem(
-                        value: 11,
-                        child: Text(
-                          "Majlis Ugama Islam Singapura, Singapore",
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ),
+                      _dropdownItem(1, "Univ. of Islamic Sciences, Karachi"),
+                      _dropdownItem(2, "ISNA (North America)"),
+                      _dropdownItem(3, "Muslim World League"),
+                      _dropdownItem(4, "Umm Al-Qura, Makkah"),
+                      _dropdownItem(5, "Egyptian Gen. Authority"),
+                      _dropdownItem(8, "Gulf Region"),
+                      _dropdownItem(9, "Kuwait"),
+                      _dropdownItem(10, "Qatar"),
                     ],
                     onChanged: (val) async {
                       if (val != null) {
@@ -267,24 +270,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       }
                     },
                   ),
-                ),
-                ListTile(
-                  title: TrText("Asr Method (Juristic)"),
-                  subtitle: DropdownButton<int>(
-                    isExpanded: true,
+                  _SettingDropdown<int>(
+                    title: "Asr Method".tr,
                     value: asrMethod,
                     items: [
-                      DropdownMenuItem(
-                        value: 0,
-                        child: Text(
-                          "Standard (Shafi'i, Maliki, Hanbali)",
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: 1,
-                        child: Text("Hanafi", style: TextStyle(fontSize: 12.sp)),
-                      ),
+                      _dropdownItem(0, "Standard (Shafi'i, Maliki, Hanbali)"),
+                      _dropdownItem(1, "Hanafi (Recommended)"),
                     ],
                     onChanged: (val) async {
                       if (val != null) {
@@ -293,33 +284,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       }
                     },
                   ),
-                ),
-                ListTile(
-                  title: TrText("Hijri Date Adjustment"),
-                  subtitle: DropdownButton<int>(
-                    isExpanded: true,
+                  _SettingDropdown<int>(
+                    title: "Hijri Adjustment".tr,
                     value: hijriOffset,
                     items: [
-                      DropdownMenuItem(
-                        value: -2,
-                        child: TrText("-2 Days", style: TextStyle(fontSize: 12.sp)),
-                      ),
-                      DropdownMenuItem(
-                        value: -1,
-                        child: TrText("-1 Day", style: TextStyle(fontSize: 12.sp)),
-                      ),
-                      DropdownMenuItem(
-                        value: 0,
-                        child: TrText("0 Days (No offset)", style: TextStyle(fontSize: 12.sp)),
-                      ),
-                      DropdownMenuItem(
-                        value: 1,
-                        child: TrText("+1 Day", style: TextStyle(fontSize: 12.sp)),
-                      ),
-                      DropdownMenuItem(
-                        value: 2,
-                        child: TrText("+2 Days", style: TextStyle(fontSize: 12.sp)),
-                      ),
+                      _dropdownItem(-2, "-2 Days"),
+                      _dropdownItem(-1, "-1 Day"),
+                      _dropdownItem(0, "Default"),
+                      _dropdownItem(1, "+1 Day"),
+                      _dropdownItem(2, "+2 Days"),
                     ],
                     onChanged: (val) async {
                       if (val != null) {
@@ -328,12 +301,310 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       }
                     },
                   ),
-                ),
-              ],
-              const Divider(),
+                ],
+              ]),
+
+              SizedBox(height: 40.h),
             ],
           );
         },
+      ),
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 12.h),
+            Container(
+              width: 40.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(2.r),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Text(
+              "Select Language".tr,
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10.h),
+            _buildLanguageItem("English", "English"),
+            _buildLanguageItem("Hindi", "हिंदी"),
+            _buildLanguageItem("Urdu", "اردو"),
+            SizedBox(height: 20.h),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageItem(String langKey, String displayName) {
+    final currentLang = SettingsService.languageNotifier.value;
+    final isSelected = currentLang == langKey;
+
+    return ListTile(
+      onTap: () async {
+        await SettingsService.setLanguage(langKey);
+        Get.back();
+      },
+      title: Text(
+        displayName,
+        style: TextStyle(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+      ),
+      trailing: isSelected ? Icon(Icons.check_circle, color: Theme.of(context).primaryColor) : null,
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: EdgeInsets.only(left: 4.w, bottom: 10.h),
+      child: Text(
+        title.toUpperCase(),
+        style: TextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey.withOpacity(0.8),
+          letterSpacing: 1.2,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLocationCard(bool isDark, ThemeData theme) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isDark
+              ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
+              : [Colors.white, const Color(0xFFF1F5F9)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(color: isDark ? Colors.white.withOpacity(0.1) : Colors.black12),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: theme.primaryColor.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.location_on, color: theme.primaryColor, size: 24.sp),
+          ),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "$currentCity, $currentCountry",
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black87,
+                  ),
+                ),
+                Text(
+                  "Tap to update location".tr,
+                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: _changeLocation,
+            icon: const Icon(Icons.edit_location_alt_outlined, color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGroupCard(bool isDark, List<Widget> children) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E293B) : Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+        border: Border.all(color: isDark ? Colors.white.withOpacity(0.05) : Colors.black12),
+      ),
+      child: Column(
+        children: children.asMap().entries.map((entry) {
+          final idx = entry.key;
+          final widget = entry.value;
+          return Column(
+            children: [
+              widget,
+              if (idx < children.length - 1)
+                Divider(
+                  height: 1,
+                  indent: 55.w,
+                  endIndent: 16.w,
+                  color: isDark ? Colors.white10 : Colors.black.withOpacity(0.05),
+                ),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  DropdownMenuItem<int> _dropdownItem(int val, String text) {
+    return DropdownMenuItem(
+      value: val,
+      child: Text(text, style: TextStyle(fontSize: 13.sp)),
+    );
+  }
+}
+
+class _SettingToggle extends StatelessWidget {
+  final IconData? icon;
+  final String title;
+  final String? subtitle;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+  final bool isDense;
+
+  const _SettingToggle({
+    this.icon,
+    required this.title,
+    this.subtitle,
+    required this.value,
+    required this.onChanged,
+    this.isDense = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      dense: isDense,
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: isDense ? 0 : 4.h),
+      secondary: icon != null
+          ? Icon(icon, color: Theme.of(context).primaryColor, size: 22.sp)
+          : null,
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+      ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle!,
+              style: TextStyle(fontSize: 11.sp, color: Colors.grey),
+            )
+          : null,
+      value: value,
+      onChanged: onChanged,
+      activeColor: Theme.of(context).primaryColor,
+    );
+  }
+}
+
+class _SettingAction extends StatelessWidget {
+  final IconData icon;
+  final Color? iconColor;
+  final String title;
+  final String? subtitle;
+  final VoidCallback onTap;
+  final Widget? trailing;
+
+  const _SettingAction({
+    required this.icon,
+    this.iconColor,
+    required this.title,
+    this.subtitle,
+    required this.onTap,
+    this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+      leading: Icon(icon, color: iconColor ?? Theme.of(context).primaryColor, size: 22.sp),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+      ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle!,
+              style: TextStyle(fontSize: 11.sp, color: Colors.grey),
+            )
+          : null,
+      trailing: trailing ?? Icon(Icons.chevron_right, color: Colors.grey, size: 20.sp),
+    );
+  }
+}
+
+class _SettingDropdown<T> extends StatelessWidget {
+  final String title;
+  final T value;
+  final List<DropdownMenuItem<T>> items;
+  final ValueChanged<T?> onChanged;
+
+  const _SettingDropdown({
+    required this.title,
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+          ),
+          SizedBox(height: 8.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<T>(
+                isExpanded: true,
+                value: value,
+                items: items,
+                onChanged: onChanged,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

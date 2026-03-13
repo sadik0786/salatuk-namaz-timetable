@@ -28,8 +28,8 @@ class PrayerTimeService {
   void updateLocation(String newCity, String newCountry, {double? newLat, double? newLng}) {
     city = newCity;
     country = newCountry;
-    if (newLat != null) latitude = newLat;
-    if (newLng != null) longitude = newLng;
+    latitude = newLat;
+    longitude = newLng;
   }
 
   Future<PrayerTimesModel> getPrayerTimes() async {
@@ -66,7 +66,14 @@ class PrayerTimeService {
       );
     } else {
       url = Uri.parse(
-        ApiConfig.timingsByCity(today, city, country, calculationMethod, asrMethod, hijriOffset),
+        ApiConfig.timingsByCity(
+          today,
+          Uri.encodeComponent(city),
+          Uri.encodeComponent(country),
+          calculationMethod,
+          asrMethod,
+          hijriOffset,
+        ),
       );
     }
 

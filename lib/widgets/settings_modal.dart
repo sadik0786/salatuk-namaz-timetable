@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:namaz_timetable/services/localization_service.dart';
 import 'package:namaz_timetable/widgets/tr_text.dart';
 import 'package:namaz_timetable/services/location_service.dart';
@@ -32,14 +33,20 @@ class _SettingsModalState extends State<SettingsModal> {
     super.initState();
     _cityController.text = widget.currentCity;
     _countryController.text = widget.currentCountry;
-    _loadLocationPreference();
+    _loadInitialState();
   }
 
-  Future<void> _loadLocationPreference() async {
+  Future<void> _loadInitialState() async {
     final prefs = await SharedPreferences.getInstance();
+    final bool isAuto = prefs.getBool('isAutoDetectLocation') ?? true;
     setState(() {
-      isAutoDetectLocation = prefs.getBool('isAutoDetectLocation') ?? true;
+      isAutoDetectLocation = isAuto;
     });
+
+    if (isAuto) {
+      // Auto-fetch on load as per user request
+      _fetchExactLocation();
+    }
   }
 
   void _onToggleAutoDetect(bool value) async {
@@ -53,8 +60,11 @@ class _SettingsModalState extends State<SettingsModal> {
     if (value) {
       await _fetchExactLocation();
     } else {
-      latitude = null;
-      longitude = null;
+      // Clear coordinates in manual mode so the API uses text entries
+      setState(() {
+        latitude = null;
+        longitude = null;
+      });
     }
   }
 
@@ -150,12 +160,16 @@ class _SettingsModalState extends State<SettingsModal> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary),
+                    Icon(
+                      Icons.check_circle,
+                      size: 16.sp,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        "Detected:\n${_areaController.text}, ${_cityController.text}, ${_stateController.text}, ${_countryController.text} - ${_pincodeController.text}",
-                        style: const TextStyle(fontSize: 14),
+                        "${_areaController.text}, ${_cityController.text}, ${_stateController.text}, ${_countryController.text} - ${_pincodeController.text}",
+                        style: TextStyle(fontSize: 12.sp),
                       ),
                     ),
                   ],
@@ -195,8 +209,11 @@ class _SettingsModalState extends State<SettingsModal> {
     );
   }
 
-  void _saveSettings() {
-    if (_cityController.text.trim().isEmpty || _countryController.text.trim().isEmpty) {
+  Future<void> _saveSettings() async {
+    String city = _cityController.text.trim();
+    String country = _countryController.text.trim();
+
+    if (city.isEmpty || country.isEmpty) {
       if (!isAutoDetectLocation) {
         ScaffoldMessenger.of(
           context,
@@ -205,11 +222,21 @@ class _SettingsModalState extends State<SettingsModal> {
       }
     }
 
+    // Small loading indicator for geocoding
+    if (!isAutoDetectLocation && latitude == null) {
+      final coords = await LocationService.getCoordinatesFromAddress(city, country);
+      if (coords != null) {
+        latitude = coords['latitude'];
+        longitude = coords['longitude'];
+      }
+    }
+
+    if (!mounted) return;
     Navigator.pop(context, {
       'area': _areaController.text.trim(),
-      'city': _cityController.text.trim(),
+      'city': city,
       'state': _stateController.text.trim(),
-      'country': _countryController.text.trim(),
+      'country': country,
       'pincode': _pincodeController.text.trim(),
       'latitude': latitude,
       'longitude': longitude,

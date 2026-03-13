@@ -6,7 +6,6 @@ import 'package:namaz_timetable/screens/dashboard_screen.dart';
 import 'package:namaz_timetable/screens/tasbih_screen.dart';
 import 'package:namaz_timetable/widgets/app_drawer.dart';
 import 'package:namaz_timetable/services/settings_service.dart';
-import 'package:namaz_timetable/services/localization_service.dart';
 import 'package:namaz_timetable/widgets/tr_text.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -44,13 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           key: _scaffoldKey,
           endDrawer: const AppDrawer(),
           body: SafeArea(
-            child: Stack(
-              children: [
-                IndexedStack(index: _selectedIndex, children: _pages),
-                if (_selectedIndex == 0)
-                  Positioned(top: 8.h, right: 12.w, child: _buildLanguageDropdown()),
-              ],
-            ),
+            child: IndexedStack(index: _selectedIndex, children: _pages),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           floatingActionButton: FloatingActionButton(
@@ -143,44 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageDropdown() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.3)),
-      ),
-      child: ValueListenableBuilder<String>(
-        valueListenable: SettingsService.languageNotifier,
-        builder: (context, currentLang, _) {
-          return DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: currentLang,
-              icon: Icon(
-                Icons.arrow_drop_down,
-                size: 20.sp,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              isDense: true,
-              style: TextStyle(fontSize: 12.sp, color: Theme.of(context).colorScheme.onSurface),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  SettingsService.setLanguage(newValue);
-                }
-              },
-              items: <String>['English', 'Urdu', 'Hindi'].map<DropdownMenuItem<String>>((
-                String value,
-              ) {
-                return DropdownMenuItem<String>(value: value, child: Text(value.tr));
-              }).toList(),
-            ),
-          );
-        },
       ),
     );
   }

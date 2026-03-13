@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:namaz_timetable/services/settings_service.dart';
 import 'package:namaz_timetable/controllers/prayer_controller.dart';
+import 'package:app_settings/app_settings.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
@@ -18,11 +19,13 @@ class NotificationService {
     // Initialize timezones
     tz_latest.initializeTimeZones();
     try {
-      final timeZoneName = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(timeZoneName.toString()));
+      final String timeZoneName = (await FlutterTimezone.getLocalTimezone()).toString();
+      tz.setLocalLocation(tz.getLocation(timeZoneName));
       debugPrint("NotificationService local timezone set to: $timeZoneName");
     } catch (e) {
-      debugPrint("Error setting local timezone: $e");
+      debugPrint("Error setting local timezone, using UTC based default: $e");
+      // Fallback: If localization fails, we might still be able to use a generic one
+      // or just stay with what initializeTimeZones() gave us (which usually is UTC)
     }
 
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -35,13 +38,16 @@ class NotificationService {
     await _notificationsPlugin.initialize(
       settings: initializationSettings,
       onDidReceiveNotificationResponse: (details) async {
-        if (details.payload == 'stop_sound') {
+        if (details.payload == 'stop_sound' || details.actionId == 'stop_azan') {
           // Attempting to stop player sound if it was test sound
           if (Get.isRegistered<PrayerController>()) {
             Get.find<PrayerController>().stopTestSound();
           }
-          // Canceling all stops the notification-based sound on many Android versions
-          await stopAllSounds();
+          // Canceling only this specific notification stops its sound
+          // without clearing the future schedule for other prayers.
+          if (details.id != null) {
+            await _notificationsPlugin.cancel(id: details.id!);
+          }
         }
       },
     );
@@ -52,6 +58,35 @@ class NotificationService {
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
       await androidPlugin?.requestNotificationsPermission();
       await androidPlugin?.requestExactAlarmsPermission();
+    }
+  }
+
+  static Future<void> requestBatteryOptimization() async {
+    if (Platform.isAndroid) {
+      try {
+        await AppSettings.openAppSettings(type: AppSettingsType.batteryOptimization);
+      } catch (e) {
+        debugPrint("Error opening battery settings: $e");
+      }
+    }
+  }
+
+  static Future<bool> isExactAlarmPermissionGranted() async {
+    if (Platform.isAndroid) {
+      final plugin = _notificationsPlugin
+          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      return await plugin?.canScheduleExactNotifications() ?? false;
+    }
+    return true;
+  }
+
+  static Future<void> requestExactAlarmPermission() async {
+    if (Platform.isAndroid) {
+      try {
+        await AppSettings.openAppSettings(type: AppSettingsType.alarm);
+      } catch (e) {
+        debugPrint("Error opening alarm settings: $e");
+      }
     }
   }
 
@@ -72,16 +107,26 @@ class NotificationService {
 
     final prayerNotifications = await SettingsService.getPrayerNotifications();
 
-    // Channel creation (v7 - recreation forced)
+    // Channel creation (v50 - recreation forced for sound fix)
     if (Platform.isAndroid) {
       final androidPlugin = _notificationsPlugin
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
+      // Delete ALL old channels to clear any stuck sound settings
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_azan_v12');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_beep_v12');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_azan_v20');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_beep_v20');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_azan_v30');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_beep_v30');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_azan_v40');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_beep_v40');
+
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_azan_v7',
+          'salatuk_azan_v50',
           'Azan Alerts',
-          description: 'Loud azan alerts at prayer times',
+          description: 'Loud azan alerts',
           importance: Importance.max,
           sound: RawResourceAndroidNotificationSound('azan'),
           playSound: true,
@@ -93,9 +138,9 @@ class NotificationService {
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_beep_v7',
+          'salatuk_beep_v50',
           'Jamaat Alerts',
-          description: 'Beep alerts for jamaat times',
+          description: 'Jamaat beep alerts',
           importance: Importance.max,
           sound: RawResourceAndroidNotificationSound('beep'),
           playSound: true,
@@ -120,7 +165,7 @@ class NotificationService {
             body: "It's time for $prayer prayer".tr,
             timeStr: azanTime,
             soundFile: 'azan',
-            channelId: 'salatuk_azan_v7',
+            channelId: 'salatuk_azan_v50',
           );
         }
 
@@ -133,7 +178,7 @@ class NotificationService {
             body: "Jamaat for $prayer is starting soon".tr,
             timeStr: jamaatTime,
             soundFile: 'beep',
-            channelId: 'salatuk_beep_v7',
+            channelId: 'salatuk_beep_v50',
           );
         }
       }
@@ -141,8 +186,15 @@ class NotificationService {
   }
 
   static Future<void> stopAllSounds() async {
-    // This cancels notifications which stops the associated sound on many Android versions
-    await _notificationsPlugin.cancelAll();
+    // This is now primarily for forced stops. 
+    // We avoid cancelAll() to preserve future prayer schedules.
+    // Instead, we just cancel the standard prayer IDs.
+    for (int i = 1001; i <= 1005; i++) {
+      await _notificationsPlugin.cancel(id: i);
+    }
+    for (int i = 2001; i <= 2005; i++) {
+      await _notificationsPlugin.cancel(id: i);
+    }
   }
 
   static Future<void> _scheduleNotification({
@@ -178,16 +230,18 @@ class NotificationService {
         channelId,
         channelId.contains('azan') ? 'Azan' : 'Jamaat',
         importance: Importance.max,
-        priority: Priority.high,
+        priority: Priority.max,
         sound: RawResourceAndroidNotificationSound(soundFile),
         playSound: true,
         category: AndroidNotificationCategory.alarm,
         audioAttributesUsage: AudioAttributesUsage.alarm,
+        ticker: title,
+        enableVibration: true,
         visibility: NotificationVisibility.public,
         fullScreenIntent: true,
-        ongoing: true, // Keep it visible until dismissed or timed out
+        ongoing: false, // Set to false so user can swipe to stop sound
         autoCancel: true,
-        timeoutAfter: 180000, // Optional: auto-stop after 3 minutes if not handled
+        timeoutAfter: 180000,
       );
 
       await _notificationsPlugin.zonedSchedule(

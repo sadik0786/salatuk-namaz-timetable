@@ -258,6 +258,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: [
           currentArea,
           currentCity,
+          currentState,
+          currentCountry,
           currentPincode,
         ].where((e) => e.trim().isNotEmpty).join(', '),
       ),

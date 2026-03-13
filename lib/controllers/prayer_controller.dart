@@ -12,7 +12,6 @@ class PrayerController extends GetxController {
   final _prayerService = PrayerTimeService(city: "Mumbai", country: "India");
   final AudioPlayer _audioPlayer = AudioPlayer();
   Timer? _nextPrayerTimer;
-  final Set<String> _playedToday = {};
 
   var isLoading = true.obs;
   var prayerTimes = Rxn<PrayerTimesModel>();
@@ -50,13 +49,7 @@ class PrayerController extends GetxController {
 
     // Periodic timer to update status and check for sound playback (foreground)
     _nextPrayerTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final now = DateTime.now();
       _updateNextPrayer();
-      
-      // Check for prayer sounds only at the start of each minute
-      if (now.second == 0) {
-        _checkAndPlayPrayerSounds();
-      }
     });
   }
 
@@ -178,54 +171,8 @@ class PrayerController extends GetxController {
     nextJamaatTime.value = jamaatTimes[cleanName] ?? "N/A";
   }
 
-  void _checkAndPlayPrayerSounds() async {
-    if (prayerTimes.value == null) return;
-
-    final ringEnabled = await SettingsService.isRingAtAdhanEnabled();
-    if (!ringEnabled) return;
-
-    final now = DateTime.now();
-    final todayStr = "${now.year}-${now.month}-${now.day}";
-    final timeStr =
-        "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
-
-    final timings = prayerTimes.value!.timings;
-    final jamaatTimes = prayerTimes.value!.jamaatTimes;
-    final prayerNotifications = await SettingsService.getPrayerNotifications();
-
-    const order = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-
-    for (final prayer in order) {
-      if (prayerNotifications[prayer] != true) continue;
-
-      // Check Azan
-      final azanT = timings[prayer];
-      if (azanT != null && azanT.contains(timeStr)) {
-        final key = "azan_${prayer}_$todayStr";
-        if (!_playedToday.contains(key)) {
-          _playedToday.add(key);
-          debugPrint("Auto-playing Azan for $prayer at $timeStr");
-          playTestSound('sounds/azan.mp3', isAuto: true);
-        }
-      }
-
-      // Check Jamaat
-      final jamaatT = jamaatTimes[prayer];
-      if (jamaatT != null && jamaatT.contains(timeStr)) {
-        final key = "jamaat_${prayer}_$todayStr";
-        if (!_playedToday.contains(key)) {
-          _playedToday.add(key);
-          debugPrint("Auto-playing Jamat for $prayer at $timeStr");
-          playTestSound('sounds/beep.mp3', isAuto: true);
-        }
-      }
-    }
-
-    // Daily cleanup of the set
-    if (now.hour == 0 && now.minute == 0) {
-      _playedToday.clear();
-    }
-  }
+  // Removed _checkAndPlayPrayerSounds as sounds are now handled via NotificationService
+  // even in the foreground for better reliability and consistency.
 
   Future<void> saveOverride(String prayer, String? azan, String? jamaat) async {
     if (azan != null) await SettingsService.saveManualPrayerTime(prayer, azan);

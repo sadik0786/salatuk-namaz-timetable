@@ -77,4 +77,17 @@ class LocationService {
       pincode: '',
     );
   }
+
+  static Future<Map<String, double>?> getCoordinatesFromAddress(String city, String country) async {
+    try {
+      final address = "$city, $country";
+      List<Location> locations = await locationFromAddress(address);
+      if (locations.isNotEmpty) {
+        return {'latitude': locations.first.latitude, 'longitude': locations.first.longitude};
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
 }
