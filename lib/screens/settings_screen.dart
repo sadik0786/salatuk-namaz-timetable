@@ -174,12 +174,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
                 _SettingAction(
-                  icon: Icons.battery_alert_outlined,
-                  iconColor: Colors.orangeAccent,
+                  icon: Icons.notifications_active_outlined,
                   title: "Fix Background Sound".tr,
-                  subtitle: "Enable unrestricted battery".tr,
+                  subtitle: "Allow app to run in background for Azan alerts".tr,
                   onTap: () => NotificationService.requestBatteryOptimization(),
                 ),
+                // _SettingAction(
+                //   icon: Icons.bug_report_outlined,
+                //   title: "Test Azan Notification".tr,
+                //   subtitle: "Click to test sound in 5 seconds".tr,
+                //   onTap: () => NotificationService.testNotification(),
+                // ),
                 _SettingAction(
                   icon: Icons.alarm_on_outlined,
                   iconColor: Colors.redAccent,
@@ -213,7 +218,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildGroupCard(isDark, [
                 _SettingToggle(
                   icon: Icons.notifications_none_outlined,
-                  title: "Individual Prayer Settings".tr,
+                  title: "Prayer Alerts".tr,
                   value: showPrayerNotifications,
                   onChanged: (val) async {
                     final prefs = await SharedPreferences.getInstance();

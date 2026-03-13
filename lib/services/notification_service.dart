@@ -19,13 +19,30 @@ class NotificationService {
     // Initialize timezones
     tz_latest.initializeTimeZones();
     try {
-      final String timeZoneName = (await FlutterTimezone.getLocalTimezone()).toString();
+      String timeZoneName = (await FlutterTimezone.getLocalTimezone()).toString();
+      
+      // If detected as UTC but we are in a typical user's region (India for this app),
+      // we can attempt to be smarter or just log it.
+      // But first, let's try to set it.
       tz.setLocalLocation(tz.getLocation(timeZoneName));
-      debugPrint("NotificationService local timezone set to: $timeZoneName");
+      
+      // If it's still UTC after detection, it might be a library quirk.
+      if (tz.local.name == 'UTC') {
+        // We can try to guess or use a very common one like Asia/Kolkata
+        // for this specific user's target audience if detection fails.
+        try {
+           tz.setLocalLocation(tz.getLocation('Asia/Kolkata'));
+           debugPrint("UTC detected, forced fallback to Asia/Kolkata");
+        } catch(_) {}
+      }
+      
+      debugPrint("NotificationService local timezone set to: ${tz.local.name}");
     } catch (e) {
-      debugPrint("Error setting local timezone, using UTC based default: $e");
-      // Fallback: If localization fails, we might still be able to use a generic one
-      // or just stay with what initializeTimeZones() gave us (which usually is UTC)
+      debugPrint("Error setting local timezone: $e");
+      // Fallback to Asia/Kolkata if possible
+      try {
+        tz.setLocalLocation(tz.getLocation('Asia/Kolkata'));
+      } catch(_) {}
     }
 
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -124,9 +141,9 @@ class NotificationService {
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_azan_v50',
-          'Azan Alerts',
-          description: 'Loud azan alerts',
+          'salatuk_azan_final_v2',
+          'Azan Notifications',
+          description: 'Loud alerts for Azan',
           importance: Importance.max,
           sound: RawResourceAndroidNotificationSound('azan'),
           playSound: true,
@@ -138,9 +155,9 @@ class NotificationService {
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_beep_v50',
-          'Jamaat Alerts',
-          description: 'Jamaat beep alerts',
+          'salatuk_beep_final_v2',
+          'Jamaat Notifications',
+          description: 'Beep alerts for Jamaat',
           importance: Importance.max,
           sound: RawResourceAndroidNotificationSound('beep'),
           playSound: true,
@@ -165,7 +182,7 @@ class NotificationService {
             body: "It's time for $prayer prayer".tr,
             timeStr: azanTime,
             soundFile: 'azan',
-            channelId: 'salatuk_azan_v50',
+            channelId: 'salatuk_azan_final_v1',
           );
         }
 
@@ -178,11 +195,38 @@ class NotificationService {
             body: "Jamaat for $prayer is starting soon".tr,
             timeStr: jamaatTime,
             soundFile: 'beep',
-            channelId: 'salatuk_beep_v50',
+            channelId: 'salatuk_beep_final_v1',
           );
         }
       }
     }
+  }
+
+  static Future<void> testNotification() async {
+    Get.snackbar("Test Started", "Closing app/Locking screen is recommended. Notification in 5s.",
+        snackPosition: SnackPosition.BOTTOM);
+
+    // Using a simple Timer + Direct show to verify sound resource
+    Future.delayed(const Duration(seconds: 5), () async {
+      final androidDetails = AndroidNotificationDetails(
+        'salatuk_azan_final_v2',
+        'Azan Notifications',
+        channelDescription: 'Loud alerts for Azan',
+        importance: Importance.max,
+        priority: Priority.max,
+        sound: const RawResourceAndroidNotificationSound('azan'),
+        playSound: true,
+        fullScreenIntent: true,
+        category: AndroidNotificationCategory.alarm,
+      );
+
+      await _notificationsPlugin.show(
+        id: 9999,
+        title: "Test Azan Result",
+        body: "If you hear this, sound is working perfectly.",
+        notificationDetails: NotificationDetails(android: androidDetails),
+      );
+    });
   }
 
   static Future<void> stopAllSounds() async {
@@ -221,14 +265,16 @@ class NotificationService {
 
       var scheduledDate = DateTime(now.year, now.month, now.day, hour, minute);
 
-      // If already passed today, set to tomorrow
-      if (scheduledDate.isBefore(now)) {
+      // Buffer: If the time is within the current minute or the future, fire today.
+      // If it's more than 1 minute in the past, schedule for tomorrow.
+      if (scheduledDate.isBefore(now.subtract(const Duration(minutes: 1)))) {
         scheduledDate = scheduledDate.add(const Duration(days: 1));
       }
 
       final androidDetails = AndroidNotificationDetails(
         channelId,
         channelId.contains('azan') ? 'Azan' : 'Jamaat',
+        channelDescription: 'Prayer alerts',
         importance: Importance.max,
         priority: Priority.max,
         sound: RawResourceAndroidNotificationSound(soundFile),
@@ -239,7 +285,7 @@ class NotificationService {
         enableVibration: true,
         visibility: NotificationVisibility.public,
         fullScreenIntent: true,
-        ongoing: false, // Set to false so user can swipe to stop sound
+        ongoing: false,
         autoCancel: true,
         timeoutAfter: 180000,
       );
@@ -254,10 +300,17 @@ class NotificationService {
         matchDateTimeComponents: DateTimeComponents.time,
         payload: 'stop_sound',
       );
-      debugPrint("Schedule successful: $title at $scheduledDate");
+      debugPrint("Schedule successful: $title at $scheduledDate (TZ: ${tz.local.name})");
     } catch (e) {
       debugPrint("Scheduling failed for $title: $e");
     }
+  }
+
+  static Future<Map<String, bool>> checkPermissionStatus() async {
+    bool exact = await isExactAlarmPermissionGranted();
+    // For general notification permission, we'd need another call, 
+    // but usually exact is the tricky one.
+    return {'exact_alarm': exact};
   }
 
   static int _getPrayerId(String prayer, {required bool isAzan}) {

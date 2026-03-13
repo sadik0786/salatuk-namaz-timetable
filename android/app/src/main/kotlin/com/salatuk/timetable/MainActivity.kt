@@ -1,4 +1,4 @@
-package com.example.namaz_timetable
+package com.salatuk.timetable
 
 import io.flutter.embedding.android.FlutterActivity
 
