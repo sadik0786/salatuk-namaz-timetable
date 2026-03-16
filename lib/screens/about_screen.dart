@@ -159,6 +159,7 @@ class AboutScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+           
                   SizedBox(height: 40.h),
                   Center(
                     child: Text(

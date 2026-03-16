@@ -8,6 +8,8 @@ import 'package:namaz_timetable/controllers/prayer_controller.dart';
 import 'package:namaz_timetable/widgets/common_app_bar.dart';
 import 'package:namaz_timetable/widgets/settings_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:namaz_timetable/screens/how_to_use_screen.dart';
+import 'package:namaz_timetable/screens/about_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -307,6 +309,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ),
                 ],
+              ]),
+
+              SizedBox(height: 24.h),
+
+              // Help & Guide Section
+              _buildSectionTitle("Help & Support".tr),
+              _buildGroupCard(isDark, [
+                _SettingAction(
+                  icon: Icons.help_outline,
+                  title: "How to Use App".tr,
+                  subtitle: "Instructions for Azan settings".tr,
+                  onTap: () => Get.to(() => const HowToUseScreen()),
+                ),
+                _SettingAction(
+                  icon: Icons.info_outline,
+                  title: "About Salatuk".tr,
+                  onTap: () => Get.to(() => const AboutScreen()),
+                ),
               ]),
 
               SizedBox(height: 40.h),

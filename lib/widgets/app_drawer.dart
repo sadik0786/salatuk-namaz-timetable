@@ -5,8 +5,9 @@ import 'package:namaz_timetable/screens/fatiha_tarika_screen.dart';
 import 'package:namaz_timetable/screens/namaz_tarika_screen.dart';
 import 'package:namaz_timetable/screens/qibla_screen.dart';
 import 'package:namaz_timetable/screens/settings_screen.dart';
-import 'package:namaz_timetable/screens/about_screen.dart';
 import 'package:namaz_timetable/screens/ramzan_screen.dart';
+import 'package:namaz_timetable/screens/prayer_tracker_screen.dart';
+import 'package:namaz_timetable/screens/zakat_calculator_screen.dart';
 import 'package:namaz_timetable/widgets/tr_text.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -57,6 +58,28 @@ class AppDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const CalendarScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.track_changes_rounded),
+            title: TrText('Prayer Tracker'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PrayerTrackerScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.calculate_outlined),
+            title: TrText('Zakat Calculator'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ZakatCalculatorScreen()),
               );
             },
           ),
@@ -112,14 +135,14 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: TrText('About App'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutScreen()));
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.info),
+          //   title: TrText('About App'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutScreen()));
+          //   },
+          // ),
         ],
       ),
     );
