@@ -227,7 +227,7 @@ class _GuideItem extends StatelessWidget {
                 ),
               ],
             ),
-            if (action != null) action!,
+            action ?? const SizedBox.shrink(),
           ],
         ),
       ),

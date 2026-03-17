@@ -12,6 +12,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:namaz_timetable/services/weather_service.dart';
+import 'package:namaz_timetable/screens/prayer_tracker_screen.dart';
+import 'package:namaz_timetable/screens/zakat_calculator_screen.dart';
+import 'package:namaz_timetable/screens/qibla_screen.dart';
+import 'package:namaz_timetable/screens/calendar_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -251,6 +255,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Scaffold(
       appBar: CommonAppBar(
         centerTitle: false,
@@ -274,26 +280,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
         final sunriseTime = _formatTime(model.timings['Sunrise'] ?? '');
         final sunsetTime = _formatTime(model.timings['Sunset'] ?? model.timings['Maghrib'] ?? '');
 
-        return Column(
-          children: [
-            ScrollTicker(
-              message:
-                  "👉 Welcome to Salatuk Timetable • Daily Salah & Ramzan Updates • Please keep your phone on silent 📵 during Jamaat • 🤲 Pray on time to be successful in both worlds • May Allah 🕋 accept our prayers • JazakAllah Khair"
-                      .tr,
-            ),
-            SizedBox(height: 14.h),
-            DigitalClock(
-              nextPrayer: controller.nextPrayer.value,
-              nextJamaatTime: controller.nextJamaatTime.value,
-              hijriOffset: controller.hijriOffset.value,
-              hijriDateString: controller.prayerTimes.value?.hijri,
-              sunrise: sunriseTime,
-              sunset: sunsetTime,
-              temperature: currentTemp,
-            ),
-            SizedBox(height: 16.h),
-            Expanded(
-              child: CarouselSlider(
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              ScrollTicker(
+                message:
+                    "👉 Welcome to Salatuk Timetable • Daily Salah & Ramzan Updates • Please keep your phone on silent 📵 during Jamaat • 🤲 Pray on time to be successful in both worlds • May Allah 🕋 accept our prayers • JazakAllah Khair"
+                        .tr,
+              ),
+              SizedBox(height: 14.h),
+              DigitalClock(
+                nextPrayer: controller.nextPrayer.value,
+                nextJamaatTime: controller.nextJamaatTime.value,
+                hijriOffset: controller.hijriOffset.value,
+                hijriDateString: controller.prayerTimes.value?.hijri,
+                sunrise: sunriseTime,
+                sunset: sunsetTime,
+                temperature: currentTemp,
+              ),
+              SizedBox(height: 16.h),
+              CarouselSlider(
                 options: CarouselOptions(
                   height: 180.h,
                   autoPlay: true,
@@ -306,6 +312,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 items: dailyCards.isEmpty
                     ? [const Center(child: CircularProgressIndicator())]
                     : dailyCards.map((cardData) {
+                        // ... existing item code ...
                         final type = cardData['type'];
                         IconData typeIcon;
                         switch (type) {
@@ -409,10 +416,122 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         );
                       }).toList(),
               ),
-            ),
-          ],
+              SizedBox(height: 16.h),
+              _buildToolsGrid(context, isDark),
+              SizedBox(height: 16.h),
+            ],
+          ),
         );
       }),
+    );
+  }
+
+  Widget _buildToolsGrid(BuildContext context, bool isDark) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Spiritual Tools".tr,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white70 : Colors.black87,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              _buildToolCard(
+                context,
+                "Prayer Tracker".tr,
+                Icons.track_changes_rounded,
+                Colors.orange,
+                () => Get.to(() => const PrayerTrackerScreen()),
+              ),
+              SizedBox(width: 12.w),
+              _buildToolCard(
+                context,
+                "Zakat Calc".tr,
+                Icons.calculate,
+                Colors.green,
+                () => Get.to(() => const ZakatCalculatorScreen()),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              _buildToolCard(
+                context,
+                "Qibla".tr,
+                Icons.explore,
+                Colors.blue,
+                () => Get.to(() => const QiblaScreen()),
+              ),
+              SizedBox(width: 12.w),
+              _buildToolCard(
+                context,
+                "Calendar".tr,
+                Icons.calendar_month,
+                Colors.purple,
+                () => Get.to(() => const CalendarScreen()),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToolCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16.r),
+        child: Container(
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : Colors.white,
+            borderRadius: BorderRadius.circular(16.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+            border: Border.all(color: color.withOpacity(0.2)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
+                child: Icon(icon, color: color, size: 24.sp),
+              ),
+              SizedBox(height: 12.h),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
