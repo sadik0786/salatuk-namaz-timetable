@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -13,10 +14,52 @@ class PrayerTrackerController extends GetxController {
     'Isha': false,
   }.obs;
 
+  final RxInt currentQuoteIndex = 0.obs;
+  Timer? _quoteTimer;
+
+  final List<Map<String, String>> prayerQuotes = [
+    {
+      "quote": "Whoever performs Fajr prayer is under the protection of Allah.",
+      "reference": "- Benefit of Fajr (Sahih Muslim)",
+    },
+    {
+      "quote":
+          "Dhuhr is an hour when the gates of heaven are opened, and I love that a good deed of mine should ascend then.",
+      "reference": "- Benefit of Dhuhr (Tirmidhi)",
+    },
+    {
+      "quote": "He who performs the Asr prayer will enter Paradise.",
+      "reference": "- Benefit of Asr (Sahih Bukhari)",
+    },
+    {
+      "quote": "He who hastens to pray Maghrib is forgiven by Allah.",
+      "reference": "- Benefit of Maghrib",
+    },
+    {
+      "quote":
+          "Whoever offers Isha in congregation, it is as if he spent half the night in worship.",
+      "reference": "- Benefit of Isha (Sahih Muslim)",
+    },
+  ];
+
   @override
   void onInit() {
     super.onInit();
     loadDayData(selectedDate.value);
+    _startQuoteTimer();
+  }
+
+  void _startQuoteTimer() {
+    _quoteTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
+      currentQuoteIndex.value =
+          (currentQuoteIndex.value + 1) % prayerQuotes.length;
+    });
+  }
+
+  @override
+  void onClose() {
+    _quoteTimer?.cancel();
+    super.onClose();
   }
 
   String _getDateKey(DateTime date) => DateFormat('yyyy-MM-dd').format(date);
@@ -28,7 +71,9 @@ class PrayerTrackerController extends GetxController {
 
     if (jsonStr != null) {
       final Map<String, dynamic> data = json.decode(jsonStr);
-      prayerStatus.value = data.map((key, value) => MapEntry(key, value as bool));
+      prayerStatus.value = data.map(
+        (key, value) => MapEntry(key, value as bool),
+      );
     } else {
       prayerStatus.value = {
         'Fajr': false,

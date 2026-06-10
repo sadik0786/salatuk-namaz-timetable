@@ -99,22 +99,29 @@ class AppTranslations extends Translations {
       'Alhamdulillah': 'Alhamdulillah',
       'Allahu Akbar': 'Allahu Akbar',
       'Master Sound Toggle': 'Master Sound Toggle',
-      'Enable or disable all Azan/Jamat sounds': 'Enable or disable all Azan/Jamat sounds',
-      'Show/Hide individual prayer settings': 'Show/Hide individual prayer settings',
+      'Enable or disable all Azan/Jamat sounds':
+          'Enable or disable all Azan/Jamat sounds',
+      'Show/Hide individual prayer settings':
+          'Show/Hide individual prayer settings',
       'Azan & Jamaat Time': 'Azan & Jamaat Time',
       'Override default times': 'Override default times',
       'Prayer Calculation': 'Prayer Calculation',
       'Show advanced settings': 'Show advanced settings',
-      'University of Islamic Sciences, Karachi': 'University of Islamic Sciences, Karachi',
-      'Islamic Society of North America (ISNA)': 'Islamic Society of North America (ISNA)',
+      'University of Islamic Sciences, Karachi':
+          'University of Islamic Sciences, Karachi',
+      'Islamic Society of North America (ISNA)':
+          'Islamic Society of North America (ISNA)',
       'Muslim World League': 'Muslim World League',
       'Umm Al-Qura University, Makkah': 'Umm Al-Qura University, Makkah',
-      'Egyptian General Authority of Survey': 'Egyptian General Authority of Survey',
+      'Egyptian General Authority of Survey':
+          'Egyptian General Authority of Survey',
       'Gulf Region': 'Gulf Region',
       'Kuwait': 'Kuwait',
       'Qatar': 'Qatar',
-      'Majlis Ugama Islam Singapura, Singapore': 'Majlis Ugama Islam Singapura, Singapore',
-      'Standard (Shafi\'i, Maliki, Hanbali)': 'Standard (Shafi\'i, Maliki, Hanbali)',
+      'Majlis Ugama Islam Singapura, Singapore':
+          'Majlis Ugama Islam Singapura, Singapore',
+      'Standard (Shafi\'i, Maliki, Hanbali)':
+          'Standard (Shafi\'i, Maliki, Hanbali)',
       'Hanafi': 'Hanafi',
       'Dua copied': 'Dua copied',
       'Link copied': 'Link copied',
@@ -134,7 +141,8 @@ class AppTranslations extends Translations {
       'BEADS': 'BEADS',
       'End - ': 'End - ',
       'End': 'End',
-      'Prayer Times & Qibla Direction app.': 'Prayer Times & Qibla Direction app.',
+      'Prayer Times & Qibla Direction app.':
+          'Prayer Times & Qibla Direction app.',
       'Developer Details': 'Developer Details',
       'Name': 'Name',
       'Email': 'Email',
@@ -187,7 +195,8 @@ class AppTranslations extends Translations {
           'Say, "O disbelievers, I do not worship what you worship. Nor are you worshippers of what I worship. Nor will I be a worshipper of what you have worshipped. Nor will you be worshippers of what I worship. For you is your religion, and for me is my religion."',
       'In the name of Allah, the Entirely Merciful, the Especially Merciful. [All] praise is [due] to Allah, Lord of the worlds - The Entirely Merciful, the Especially Merciful, Sovereign of the Day of Recompense. It is You we worship and You we ask for help. Guide us to the straight path - The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.':
           'In the name of Allah, the Entirely Merciful, the Especially Merciful. [All] praise is [due] to Allah, Lord of the worlds - The Entirely Merciful, the Especially Merciful, Sovereign of the Day of Recompense. It is You we worship and You we ask for help. Guide us to the straight path - The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.',
-      'My Lord, increase me in knowledge.': 'My Lord, increase me in knowledge.',
+      'My Lord, increase me in knowledge.':
+          'My Lord, increase me in knowledge.',
       'My Lord, have mercy upon them as they brought me up [when I was] small.':
           'My Lord, have mercy upon them as they brought me up [when I was] small.',
       'Detected:': 'Detected:',
@@ -223,12 +232,38 @@ class AppTranslations extends Translations {
       'Step 6: Surah Al-Fatiha (1 time)': 'Step 6: Surah Al-Fatiha (1 time)',
       'Read Surah Al-Fatiha (Alhamdulillah) 1 time.':
           'Read Surah Al-Fatiha (Alhamdulillah) 1 time.',
-      'Step 7: Surah Al-Baqarah (Beginning)': 'Step 7: Surah Al-Baqarah (Beginning)',
-      'Read the first 5 Ayats of Surah Al-Baqarah.': 'Read the first 5 Ayats of Surah Al-Baqarah.',
+      'Step 7: Surah Al-Baqarah (Beginning)':
+          'Step 7: Surah Al-Baqarah (Beginning)',
+      'Read the first 5 Ayats of Surah Al-Baqarah.':
+          'Read the first 5 Ayats of Surah Al-Baqarah.',
       'Step 8: Final Durood and Dua': 'Step 8: Final Durood and Dua',
       'Recite Durood Shareef again 3, 5, 7 or 11 times. Then raise your hands in Dua and ask Allah to accept it and present the reward (Esaal-e-Sawab) to the beloved Prophet (PBUH), his family, companions, all Awliya Allah, and all deceased Muslims.':
           'Recite Durood Shareef again 3, 5, 7 or 11 times. Then raise your hands in Dua and ask Allah to accept it and present the reward (Esaal-e-Sawab) to the beloved Prophet (PBUH), his family, companions, all Awliya Allah, and all deceased Muslims.',
       'Arabi (عربی)': 'Arabi (Arabic)',
+      'Fasting Times': 'Fasting Times',
+      'Start Time': 'Start Time',
+      'End Time': 'End Time',
+      'Masha\'Allah!': 'Masha\'Allah!',
+      'You have completed all your prayers for today. May Allah accept your prayers and grant you success in this life and the hereafter.':
+          'You have completed all your prayers for today. May Allah accept your prayers and grant you success in this life and the hereafter.',
+      'Daily Progress': 'Daily Progress',
+      'prayers_completed_count': '@done of @total prayers completed',
+      'Whoever performs Fajr prayer is under the protection of Allah.':
+          'Whoever performs Fajr prayer is under the protection of Allah.',
+      '- Benefit of Fajr (Sahih Muslim)': '- Benefit of Fajr (Sahih Muslim)',
+      'Dhuhr is an hour when the gates of heaven are opened, and I love that a good deed of mine should ascend then.':
+          'Dhuhr is an hour when the gates of heaven are opened, and I love that a good deed of mine should ascend then.',
+      '- Benefit of Dhuhr (Tirmidhi)': '- Benefit of Dhuhr (Tirmidhi)',
+      'He who performs the Asr prayer will enter Paradise.':
+          'He who performs the Asr prayer will enter Paradise.',
+      '- Benefit of Asr (Sahih Bukhari)': '- Benefit of Asr (Sahih Bukhari)',
+      'He who hastens to pray Maghrib is forgiven by Allah.':
+          'He who hastens to pray Maghrib is forgiven by Allah.',
+      '- Benefit of Maghrib': '- Benefit of Maghrib',
+      'Whoever offers Isha in congregation, it is as if he spent half the night in worship.':
+          'Whoever offers Isha in congregation, it is as if he spent half the night in worship.',
+      '- Benefit of Isha (Sahih Muslim)': '- Benefit of Isha (Sahih Muslim)',
+      'Did you know?': 'Did you know?',
       'Hindi (हिंदी)': 'Hindi (Hindi)',
     },
     'ur': {
@@ -309,14 +344,18 @@ class AppTranslations extends Translations {
       'Alhamdulillah': 'الحمدللہ',
       'Allahu Akbar': 'اللہ اکبر',
       'Master Sound Toggle': 'ماسٹر ساؤنڈ ٹوگل',
-      'Enable or disable all Azan/Jamat sounds': 'تمام اذان اور جماعت کی آوازیں کھولیں یا بند کریں',
-      'Show/Hide individual prayer settings': 'نماز کی انفرادی ترتیبات دکھائیں یا چھپائیں',
+      'Enable or disable all Azan/Jamat sounds':
+          'تمام اذان اور جماعت کی آوازیں کھولیں یا بند کریں',
+      'Show/Hide individual prayer settings':
+          'نماز کی انفرادی ترتیبات دکھائیں یا چھپائیں',
       'Azan & Jamaat Time': 'اذان اور جماعت کا وقت',
       'Override default times': 'پہلے سے طے شدہ اوقات تبدیل کریں',
       'Prayer Calculation': 'نماز کا حساب',
       'Show advanced settings': 'اعلی درجے کی ترتیبات دکھائیں',
-      'University of Islamic Sciences, Karachi': 'جامعہ العلوم الاسلامیہ، کراچی',
-      'Islamic Society of North America (ISNA)': 'اسلامک سوسائٹی آف نارتھ امریکہ (ISNA)',
+      'University of Islamic Sciences, Karachi':
+          'جامعہ العلوم الاسلامیہ، کراچی',
+      'Islamic Society of North America (ISNA)':
+          'اسلامک سوسائٹی آف نارتھ امریکہ (ISNA)',
       'Muslim World League': 'رابطہ عالم اسلامی',
       'Umm Al-Qura University, Makkah': 'ام القریٰ یونیورسٹی، مکہ',
       'Egyptian General Authority of Survey': 'مصری جنرل اتھارٹی آف سروے',
@@ -344,7 +383,8 @@ class AppTranslations extends Translations {
       'BEADS': 'تسبیح کے دانے',
       'End - ': 'ختم - ',
       'End': 'ختم',
-      'Prayer Times & Qibla Direction app.': 'نماز کے اوقات اور قبلہ رخ معلوم کرنے کی ایپ۔',
+      'Prayer Times & Qibla Direction app.':
+          'نماز کے اوقات اور قبلہ رخ معلوم کرنے کی ایپ۔',
       'Developer Details': 'ڈیولپر کی تفصیلات',
       'Name': 'نام',
       'Email': 'ای میل',
@@ -397,7 +437,8 @@ class AppTranslations extends Translations {
           'کہو: اے کافروں! میں ان کی عبادت نہیں کرتا جن کی تم عبادت کرتے ہو۔ اور نہ تم اس کی عبادت کرنے والے ہو جس کی میں عبادت کرتا ہوں۔ اور نہ میں ان کی عبادت کرنے والا ہوں جن کی تم نے عبادت کی۔ اور نہ تم اس کی عبادت کرنے والے ہو جس کی میں عبادت کرتا ہوں۔ تمہارے لیے تمہارا دین ہے اور میرے لیے میرا دین۔',
       'In the name of Allah, the Entirely Merciful, the Especially Merciful. [All] praise is [due] to Allah, Lord of the worlds - The Entirely Merciful, the Especially Merciful, Sovereign of the Day of Recompense. It is You we worship and You we ask for help. Guide us to the straight path - The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.':
           'اللہ کے نام سے جو نہایت مہربان، ہمیشہ رحم فرمانے والا ہے۔ تمام تعریفیں اللہ ہی کے لیے ہیں جو تمام جہانوں کا رب ہے۔ نہایت مہربان، ہمیشہ رحم فرمانے والا ہے۔ روزِ جزاء کا مالک ہے۔ ہم تیری ہی عبادت کرتے ہیں اور تجھ ہی سے مدد مانگتے ہیں۔ ہمیں سیدھے راستے پر چلا۔ ان لوگوں کے راستے پر جن پر تو نے انعام فرمایا، نہ ان کے راستے پر جن پر غضب کیا گیا اور نہ گمراہوں کے۔',
-      'My Lord, increase me in knowledge.': 'اے میرے رب، میرے علم میں اضافہ فرما۔',
+      'My Lord, increase me in knowledge.':
+          'اے میرے رب، میرے علم میں اضافہ فرما۔',
       'My Lord, have mercy upon them as they brought me up [when I was] small.':
           'اے میرے رب، ان دونوں پر رحم فرما جیسا کہ انہوں نے بچپن میں میری پرورش کی۔',
       'Detected:': 'تلاش کیا گیا:',
@@ -431,13 +472,39 @@ class AppTranslations extends Translations {
       'Step 5: Surah An-Nas (1 time)': 'پانچواں قدم: سورہ الناس (1 بار)',
       'Read Surah An-Nas 1 time.': 'سورہ الناس 1 بار پڑھیں۔',
       'Step 6: Surah Al-Fatiha (1 time)': 'چھٹا قدم: سورہ فاتحہ (1 بار)',
-      'Read Surah Al-Fatiha (Alhamdulillah) 1 time.': 'سورہ فاتحہ (الحمد للہ) 1 بار پڑھیں۔',
+      'Read Surah Al-Fatiha (Alhamdulillah) 1 time.':
+          'سورہ فاتحہ (الحمد للہ) 1 بار پڑھیں۔',
       'Step 7: Surah Al-Baqarah (Beginning)': 'ساتواں قدم: سورہ بقرہ (شروع)',
-      'Read the first 5 Ayats of Surah Al-Baqarah.': 'سورہ بقرہ کی پہلی 5 آیات پڑھیں۔',
+      'Read the first 5 Ayats of Surah Al-Baqarah.':
+          'سورہ بقرہ کی پہلی 5 آیات پڑھیں۔',
       'Step 8: Final Durood and Dua': 'آٹھواں قدم: آخری درود اور دعا',
       'Recite Durood Shareef again 3, 5, 7 or 11 times. Then raise your hands in Dua and ask Allah to accept it and present the reward (Esaal-e-Sawab) to the beloved Prophet (PBUH), his family, companions, all Awliya Allah, and all deceased Muslims.':
           'درود شریف دوبارہ 3، 5، 7 یا 11 بار پڑھیں۔ پھر ہاتھ اٹھا کر دعا مانگیں کہ اللہ تعالیٰ اسے قبول فرمائے اور اس کا ثواب (ایصالِ ثواب) پیارے نبی صلی اللہ علیہ وسلم، ان کی آل، اصحاب، تمام اولیاء اللہ اور تمام مرحوم مسلمانوں تک پہنچائے۔',
       'Arabi (عربی)': 'عربی',
+      'Fasting Times': 'روزے کے اوقات',
+      'Start Time': 'شروع کا وقت',
+      'End Time': 'ختم ہونے کا وقت',
+      'Masha\'Allah!': 'ماشاءاللہ!',
+      'You have completed all your prayers for today. May Allah accept your prayers and grant you success in this life and the hereafter.':
+          'آپ نے آج کی تمام نمازیں مکمل کر لی ہیں۔ اللہ آپ کی نمازیں قبول فرمائے اور آپ کو دنیا و آخرت میں کامیابی عطا فرمائے۔',
+      'Daily Progress': 'آج کی پیشرفت',
+      'prayers_completed_count': '@total میں سے @done نمازیں مکمل ہوئیں',
+      'Whoever performs Fajr prayer is under the protection of Allah.':
+          'جو شخص فجر کی نماز ادا کرتا ہے وہ اللہ کی پناہ میں آ جاتا ہے۔',
+      '- Benefit of Fajr (Sahih Muslim)': '- فجر کی فضیلت (صحیح مسلم)',
+      'Dhuhr is an hour when the gates of heaven are opened, and I love that a good deed of mine should ascend then.':
+          'ظہر کا وقت وہ ہے جب آسمان کے دروازے کھولے جاتے ہیں، اور مجھے پسند ہے کہ میرا کوئی نیک عمل اس وقت اوپر جائے۔',
+      '- Benefit of Dhuhr (Tirmidhi)': '- ظہر کی فضیلت (ترمذی)',
+      'He who performs the Asr prayer will enter Paradise.':
+          'جو عصر کی نماز پڑھے گا وہ جنت میں داخل ہوگا۔',
+      '- Benefit of Asr (Sahih Bukhari)': '- عصر کی فضیلت (صحیح بخاری)',
+      'He who hastens to pray Maghrib is forgiven by Allah.':
+          'جو مغرب کی نماز میں جلدی کرتا ہے، اللہ اس کی مغفرت فرماتا ہے۔',
+      '- Benefit of Maghrib': '- مغرب کی فضیلت',
+      'Whoever offers Isha in congregation, it is as if he spent half the night in worship.':
+          'جس نے عشاء کی نماز باجماعت ادا کی گویا اس نے آدھی رات عبادت میں گزاری۔',
+      '- Benefit of Isha (Sahih Muslim)': '- عشاء کی فضیلت (صحیح مسلم)',
+      'Did you know?': 'کیا آپ جانتے ہیں؟',
       'Hindi (हिंदी)': 'ہندی',
     },
     'hi': {
@@ -518,14 +585,18 @@ class AppTranslations extends Translations {
       'Alhamdulillah': 'अल्हम्दुलिल्लाह',
       'Allahu Akbar': 'अल्लाहु अकबर',
       'Master Sound Toggle': 'मास्टर साउंड',
-      'Enable or disable all Azan/Jamat sounds': 'सभी अज़ान और जमात की आवाज़ें चालू या बंद करें',
-      'Show/Hide individual prayer settings': 'प्रार्थना सेटिंग्स दिखाएं या छिपाएं',
+      'Enable or disable all Azan/Jamat sounds':
+          'सभी अज़ान और जमात की आवाज़ें चालू या बंद करें',
+      'Show/Hide individual prayer settings':
+          'प्रार्थना सेटिंग्स दिखाएं या छिपाएं',
       'Azan & Jamaat Time': 'अज़ान और जमात का समय',
       'Override default times': 'डिफ़ॉल्ट समय बदलें',
       'Prayer Calculation': 'नमाज़ की गणना',
       'Show advanced settings': 'एडवांस्ड सेटिंग्स दिखाएं',
-      'University of Islamic Sciences, Karachi': 'इस्लामिक विज्ञान विश्वविद्यालय, कराची',
-      'Islamic Society of North America (ISNA)': 'इस्लामिक सोसाइटी ऑफ नॉर्थ अमेरिका (ISNA)',
+      'University of Islamic Sciences, Karachi':
+          'इस्लामिक विज्ञान विश्वविद्यालय, कराची',
+      'Islamic Society of North America (ISNA)':
+          'इस्लामिक सोसाइटी ऑफ नॉर्थ अमेरिका (ISNA)',
       'Muslim World League': 'मुस्लिम वर्ल्ड लीग',
       'Umm Al-Qura University, Makkah': 'उम्म अल-कुरा विश्वविद्यालय, मक्का',
       'Egyptian General Authority of Survey': 'मिस्र के जनरल अथॉरिटी ऑफ सर्वे',
@@ -553,7 +624,8 @@ class AppTranslations extends Translations {
       'BEADS': 'तस्बीह',
       'End - ': 'समाप्त - ',
       'End': 'अंत',
-      'Prayer Times & Qibla Direction app.': 'नमाज़ के समय और क़िबला दिशा बताने वाला ऐप।',
+      'Prayer Times & Qibla Direction app.':
+          'नमाज़ के समय और क़िबला दिशा बताने वाला ऐप।',
       'Developer Details': 'डेवलपर विवरण',
       'Name': 'नाम',
       'Email': 'ईमेल',
@@ -606,7 +678,8 @@ class AppTranslations extends Translations {
           'कहो, ऐ काफिरों! मैं उनकी इबादत नहीं करता जिनकी तुम इबादत करते हो। और न तुम उसकी इबादत करने वाले हो जिसकी मैं इबादत करता हूँ। और न मैं उनकी इबादत करने वाला हूँ जिनकी तुमने इबादत की। और न तुम उसकी इबादत करने वाले हो जिसकी मैं इबादत करता हूँ। तुम्हारे लिए तुम्हारा धर्म और मेरे लिए मेरा धर्म।',
       'In the name of Allah, the Entirely Merciful, the Especially Merciful. [All] praise is [due] to Allah, Lord of the worlds - The Entirely Merciful, the Especially Merciful, Sovereign of the Day of Recompense. It is You we worship and You we ask for help. Guide us to the straight path - The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.':
           'अल्लाह के नाम से जो अत्यंत दयालु और अत्यंत कृपाशील है। [सभी] प्रशंसा अल्लाह के लिए है, जो दुनिया के रब हैं - अत्यंत दयालु, अत्यंत कृपाशील, पुरस्कार के दिन के स्वामी। हम तेरी ही इबादत करते हैं और तुझी से मदद माँगते हैं। हमें सीधे रास्ते पर ले चल - उन लोगों का रास्ता जिन पर तूने उपकार किया है, उनका नहीं जिन पर [तेरा] क्रोध हुआ और न ही उनका जो भटक गए हैं।',
-      'My Lord, increase me in knowledge.': 'ऐ मेरे रब, मेरे ज्ञान में वृद्धि कर।',
+      'My Lord, increase me in knowledge.':
+          'ऐ मेरे रब, मेरे ज्ञान में वृद्धि कर।',
       'My Lord, have mercy upon them as they brought me up [when I was] small.':
           'ऐ मेरे रब, उन पर दया कर जैसा कि उन्होंने बचपन में मेरा पालन-पोषण किया।',
       'Detected:': 'पता चला:',
@@ -643,11 +716,36 @@ class AppTranslations extends Translations {
       'Read Surah Al-Fatiha (Alhamdulillah) 1 time.':
           'सूरह अल-फ़ातिहा (अलहम्दुलिल्लाह) 1 बार पढ़ें।',
       'Step 7: Surah Al-Baqarah (Beginning)': 'चरण 7: सूरह अल-बक़रह (शुरुआत)',
-      'Read the first 5 Ayats of Surah Al-Baqarah.': 'सूरह अल-बक़रह की पहली 5 आयतें पढ़ें।',
+      'Read the first 5 Ayats of Surah Al-Baqarah.':
+          'सूरह अल-बक़रह की पहली 5 आयतें पढ़ें।',
       'Step 8: Final Durood and Dua': 'चरण 8: अंतिम दरूद और दुआ',
       'Recite Durood Shareef again 3, 5, 7 or 11 times. Then raise your hands in Dua and ask Allah to accept it and present the reward (Esaal-e-Sawab) to the beloved Prophet (PBUH), his family, companions, all Awliya Allah, and all deceased Muslims.':
           'दरूद शरीफ दोबारा 3, 5, 7 या 11 बार पढ़ें। फिर दुआ के लिए हाथ उठाएं और अल्लाह से इसे स्वीकार करने और इसका सवाब (ईसाल-ए-सवाब) प्यारे नबी (स.अ.व.), उनके परिवार, साथियों, सभी औलिया अल्लाह और सभी मरहूम मुसलमानों को पहुँचाने की दुआ करें।',
       'Arabi (عربی)': 'अरबी',
+      'Fasting Times': 'उपवास का समय',
+      'Start Time': 'शुरू होने का समय',
+      'End Time': 'समाप्त होने का समय',
+      'Masha\'Allah!': 'माशाअल्लाह!',
+      'You have completed all your prayers for today. May Allah accept your prayers and grant you success in this life and the hereafter.':
+          'आपने आज की अपनी सभी नमाज़ें पूरी कर ली हैं। अल्लाह आपकी नमाज़ें कबूल करे और आपको दुनिया और आख़िरत में कामयाबी अता फरमाए।',
+      'Daily Progress': 'आज की प्रगति',
+      'prayers_completed_count': '@total में से @done नमाज़ें पूरी हुईं',
+      'Whoever performs Fajr prayer is under the protection of Allah.':
+          'जो व्यक्ति फज्र की नमाज़ पढ़ता है वह अल्लाह की सुरक्षा में आ जाता है।',
+      '- Benefit of Fajr (Sahih Muslim)': '- फज्र की फ़ज़ीलत (सहीह मुस्लिम)',
+      'Dhuhr is an hour when the gates of heaven are opened, and I love that a good deed of mine should ascend then.':
+          'ज़ुहर का समय वह है जब स्वर्ग के द्वार खोले जाते हैं, और मुझे पसंद है कि मेरा कोई नेक काम उस समय ऊपर जाए।',
+      '- Benefit of Dhuhr (Tirmidhi)': '- ज़ुहर की फ़ज़ीलत (तिर्मिज़ी)',
+      'He who performs the Asr prayer will enter Paradise.':
+          'जो असर की नमाज़ पढ़ेगा वह जन्नत में प्रवेश करेगा।',
+      '- Benefit of Asr (Sahih Bukhari)': '- असर की फ़ज़ीलत (सहीह बुखारी)',
+      'He who hastens to pray Maghrib is forgiven by Allah.':
+          'जो मग़रिब की नमाज़ में जल्दी करता है, अल्लाह उसे क्षमा कर देता है।',
+      '- Benefit of Maghrib': '- मग़रिब की फ़ज़ीलत',
+      'Whoever offers Isha in congregation, it is as if he spent half the night in worship.':
+          'जिसने ईशा की नमाज़ जमात के साथ पढ़ी, मानो उसने आधी रात इबादत में गुज़ारी।',
+      '- Benefit of Isha (Sahih Muslim)': '- ईशा की फ़ज़ीलत (सहीह मुस्लिम)',
+      'Did you know?': 'क्या आप जानते हैं?',
       'Hindi (हिंदी)': 'हिंदी',
     },
   };

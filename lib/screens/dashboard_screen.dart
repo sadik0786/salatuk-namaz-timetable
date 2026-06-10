@@ -77,7 +77,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       // 1. Fetch Random Ayah from API
       try {
-        final resEn = await http.get(Uri.parse('https://api.alquran.cloud/v1/ayah/random/en.asad'));
+        final resEn = await http.get(
+          Uri.parse('https://api.alquran.cloud/v1/ayah/random/en.asad'),
+        );
         if (resEn.statusCode == 200) {
           final dataEn = json.decode(resEn.body)['data'];
 
@@ -93,7 +95,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             'type': 'Daily Ayah',
             'arabic': textAr,
             'translation': dataEn['text'],
-            'reference': 'Surah ${dataEn['surah']['englishName']}, Ayah ${dataEn['numberInSurah']}',
+            'reference':
+                'Surah ${dataEn['surah']['englishName']}, Ayah ${dataEn['numberInSurah']}',
             'color1': '#00b4db',
             'color2': '#0083b0',
           });
@@ -118,7 +121,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       fetchedCards.add({
         'type': 'Daily Hadith',
         'arabic': 'مَنْ لَا يَرْحَمُ لَا يُرْحَمُ',
-        'translation': 'He who does not show mercy to others, Allah will not show mercy to him.',
+        'translation':
+            'He who does not show mercy to others, Allah will not show mercy to him.',
         'reference': 'Sahih Al-Bukhari',
         'color1': '#8A2387',
         'color2': '#E94057',
@@ -210,7 +214,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       fetchedCards.add({
         'type': 'Daily Dua',
         'arabic': 'رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا',
-        'translation': 'My Lord, have mercy upon them as they brought me up [when I was] small.',
+        'translation':
+            'My Lord, have mercy upon them as they brought me up [when I was] small.',
         'reference': 'Surah Al-Isra, 17:24',
         'color1': '#6a11cb',
         'color2': '#2575fc',
@@ -269,8 +274,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           currentPincode,
         ].where((e) => e.trim().isNotEmpty).join(', '),
       ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
+      body: Stack(
+        children: [
+          Positioned(
+            right: -50.w,
+            bottom: -50.w,
+            child: Icon(
+              Icons.mosque,
+              size: 250.w,
+              color: theme.primaryColor.withOpacity(isDark ? 0.03 : 0.05),
+            ),
+          ),
+          Obx(() {
+            if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -278,7 +294,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         if (model == null) return Center(child: Text("Error loading times".tr));
 
         final sunriseTime = _formatTime(model.timings['Sunrise'] ?? '');
-        final sunsetTime = _formatTime(model.timings['Sunset'] ?? model.timings['Maghrib'] ?? '');
+        final sunsetTime = _formatTime(
+          model.timings['Sunset'] ?? model.timings['Maghrib'] ?? '',
+        );
 
         return SingleChildScrollView(
           child: Column(
@@ -327,10 +345,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         }
 
                         final Color c1 = Color(
-                          int.parse(cardData['color1']!.replaceFirst('#', '0xFF')),
+                          int.parse(
+                            cardData['color1']!.replaceFirst('#', '0xFF'),
+                          ),
                         );
                         final Color c2 = Color(
-                          int.parse(cardData['color2']!.replaceFirst('#', '0xFF')),
+                          int.parse(
+                            cardData['color2']!.replaceFirst('#', '0xFF'),
+                          ),
                         );
 
                         return Container(
@@ -357,7 +379,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w,
+                                    vertical: 4.h,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: Colors.white.withOpacity(0.2),
                                     borderRadius: BorderRadius.circular(20.r),
@@ -365,7 +390,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(typeIcon, size: 14.sp, color: Colors.white),
+                                      Icon(
+                                        typeIcon,
+                                        size: 14.sp,
+                                        color: Colors.white,
+                                      ),
                                       SizedBox(width: 4.w),
                                       Text(
                                         cardData['type']!.tr,
@@ -423,6 +452,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         );
       }),
+        ],
+      ),
     );
   }
 
@@ -433,7 +464,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Spiritual Tools".tr,
+            "Islamic Tools".tr,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -453,7 +484,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               SizedBox(width: 12.w),
               _buildToolCard(
                 context,
-                "Zakat Calc".tr,
+                "Zakat Calculator".tr,
                 Icons.calculate,
                 Colors.green,
                 () => Get.to(() => const ZakatCalculatorScreen()),
@@ -465,7 +496,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               _buildToolCard(
                 context,
-                "Qibla".tr,
+                "Find Qibla".tr,
                 Icons.explore,
                 Colors.blue,
                 () => Get.to(() => const QiblaScreen()),
@@ -516,7 +547,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               Container(
                 padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
                 child: Icon(icon, color: color, size: 24.sp),
               ),
               SizedBox(height: 12.h),

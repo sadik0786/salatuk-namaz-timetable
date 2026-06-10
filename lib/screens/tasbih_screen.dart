@@ -166,6 +166,13 @@ class _TasbihScreenState extends State<TasbihScreen> with TickerProviderStateMix
             // Decorative background elements
             _buildDecorCircle(top: -50, right: -50, color: primaryColor.withOpacity(0.1)),
             _buildDecorCircle(bottom: 100, left: -100, color: primaryColor.withOpacity(0.08)),
+            Center(
+              child: Icon(
+                Icons.mosque,
+                size: 350.w,
+                color: primaryColor.withOpacity(0.03),
+              ),
+            ),
 
             SafeArea(
               child: Column(

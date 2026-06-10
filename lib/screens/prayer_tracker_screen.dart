@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,37 +16,44 @@ class PrayerTrackerScreen extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+      backgroundColor: isDark
+          ? const Color(0xFF0F172A)
+          : const Color(0xFFF8FAFC),
       appBar: CommonAppBar(title: "Prayer Tracker".tr),
       body: Column(
         children: [
           _buildDateHeader(controller, theme, isDark),
           Expanded(
-            child: Obx(() => ListView(
-                  padding: EdgeInsets.all(16.w),
-                  children: [
-                    _buildProgressCard(controller, theme),
-                    SizedBox(height: 20.h),
-                    ...controller.prayerStatus.keys.map((prayer) {
-                      return _buildPrayerItem(
-                        prayer: prayer,
-                        isDone: controller.prayerStatus[prayer] ?? false,
-                        onToggle: () => controller.togglePrayer(prayer),
-                        theme: theme,
-                        isDark: isDark,
-                      );
-                    }),
-                    SizedBox(height: 20.h),
-                    _buildQuoteCard(isDark),
+            child: Obx(
+              () => ListView(
+                padding: EdgeInsets.all(16.w),
+                children: [
+                  _buildProgressCard(controller, theme, isDark),
+                  SizedBox(height: 20.h),
+                  _buildPrayerStepper(controller, theme, isDark),
+                  if (controller.prayerStatus.values.isNotEmpty &&
+                      controller.prayerStatus.values.every(
+                        (isDone) => isDone,
+                      )) ...[
+                    SizedBox(height: 24.h),
+                    _buildCompletionMessage(theme, isDark),
                   ],
-                )),
+                  SizedBox(height: 20.h),
+                  _buildQuoteCard(controller, isDark),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDateHeader(PrayerTrackerController controller, ThemeData theme, bool isDark) {
+  Widget _buildDateHeader(
+    PrayerTrackerController controller,
+    ThemeData theme,
+    bool isDark,
+  ) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h),
       color: isDark ? const Color(0xFF1E293B) : Colors.white,
@@ -76,20 +84,35 @@ class PrayerTrackerScreen extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.calendar_month, size: 18.sp, color: theme.primaryColor),
+                  Icon(
+                    Icons.calendar_month,
+                    size: 18.sp,
+                    color: theme.primaryColor,
+                  ),
                   SizedBox(width: 8.w),
-                  Obx(() => Text(
-                        DateFormat('EEEE, d MMM').format(controller.selectedDate.value),
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
-                      )),
+                  Obx(
+                    () => Text(
+                      DateFormat(
+                        'EEEE, d MMM',
+                      ).format(controller.selectedDate.value),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
           IconButton(
             onPressed: () {
-              final next = controller.selectedDate.value.add(const Duration(days: 1));
-              if (next.isBefore(DateTime.now().add(const Duration(seconds: 1)))) {
+              final next = controller.selectedDate.value.add(
+                const Duration(days: 1),
+              );
+              if (next.isBefore(
+                DateTime.now().add(const Duration(seconds: 1)),
+              )) {
                 controller.changeDate(next);
               }
             },
@@ -100,148 +123,380 @@ class PrayerTrackerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressCard(PrayerTrackerController controller, ThemeData theme) {
+  Widget _buildProgressCard(
+    PrayerTrackerController controller,
+    ThemeData theme,
+    bool isDark,
+  ) {
     final doneCount = controller.prayerStatus.values.where((v) => v).length;
     final total = controller.prayerStatus.length;
     final percentage = doneCount / total;
 
     return Container(
-      padding: EdgeInsets.all(20.w),
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [theme.primaryColor, theme.primaryColor.withBlue(255)],
+        gradient: const LinearGradient(
+          colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.circular(24.r),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF6366F1).withOpacity(0.4),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            right: -10.w,
+            top: -10.w,
+            child: Icon(
+              Icons.mosque,
+              size: 140.w,
+              color: Colors.white.withOpacity(0.05),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Daily Progress".tr,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        "prayers_completed_count".trParams({
+                          'done': doneCount.toString(),
+                          'total': total.toString(),
+                        }),
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.85),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0, end: percentage),
+                  duration: const Duration(milliseconds: 1000),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, _) {
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          width: 70.w,
+                          height: 70.w,
+                          child: CircularProgressIndicator(
+                            value: value,
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                            strokeWidth: 8,
+                            strokeCap: StrokeCap.round,
+                          ),
+                        ),
+                        Text(
+                          "${(value * 100).toInt()}%",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPrayerStepper(
+    PrayerTrackerController controller,
+    ThemeData theme,
+    bool isDark,
+  ) {
+    final prayers = controller.prayerStatus.keys.toList();
+    final color = const Color(0xFF6366F1);
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: theme.primaryColor.withOpacity(0.3),
+            color: Colors.black.withOpacity(0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Row(
-        children: [
-          Expanded(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(prayers.length * 2 - 1, (index) {
+          if (index.isOdd) {
+            final prayerIndex = index ~/ 2;
+            final isDone =
+                controller.prayerStatus[prayers[prayerIndex]] ?? false;
+
+            return Expanded(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                margin: EdgeInsets.only(top: 18.w),
+                height: 3.h,
+                color: isDone
+                    ? color
+                    : (isDark ? Colors.white10 : Colors.grey.shade300),
+              ),
+            );
+          }
+
+          final prayerIndex = index ~/ 2;
+          final prayer = prayers[prayerIndex];
+          final isDone = controller.prayerStatus[prayer] ?? false;
+
+          return GestureDetector(
+            onTap: () {
+              HapticFeedback.lightImpact();
+              controller.togglePrayer(prayer);
+            },
+            behavior: HitTestBehavior.opaque,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Daily Progress".tr,
-                  style:
-                      TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.bold),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  width: 36.w,
+                  height: 36.w,
+                  decoration: BoxDecoration(
+                    color: isDone
+                        ? color
+                        : (isDark
+                              ? const Color(0xFF0F172A)
+                              : Colors.grey.shade100),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isDone
+                          ? color
+                          : (isDark ? Colors.white24 : Colors.grey.shade300),
+                      width: 2,
+                    ),
+                    boxShadow: isDone
+                        ? [
+                            BoxShadow(
+                              color: color.withOpacity(0.4),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Center(
+                    child: isDone
+                        ? Icon(Icons.check, color: Colors.white, size: 18.sp)
+                        : Text(
+                            "${prayerIndex + 1}",
+                            style: TextStyle(
+                              color: isDark
+                                  ? Colors.white54
+                                  : Colors.grey.shade600,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                  ),
                 ),
-                SizedBox(height: 4.h),
+                SizedBox(height: 8.h),
                 Text(
-                  "$doneCount of $total prayers completed".tr,
-                  style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12.sp),
+                  prayer.tr,
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    fontWeight: isDone ? FontWeight.bold : FontWeight.w500,
+                    color: isDone
+                        ? color
+                        : (isDark ? Colors.white70 : Colors.black87),
+                  ),
                 ),
               ],
             ),
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              CircularProgressIndicator(
-                value: percentage,
-                backgroundColor: Colors.white.withOpacity(0.2),
-                color: Colors.white,
-                strokeWidth: 6,
-              ),
-              Text(
-                "${(percentage * 100).toInt()}%",
-                style:
-                    TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ],
+          );
+        }),
       ),
     );
   }
 
-  Widget _buildPrayerItem({
-    required String prayer,
-    required bool isDone,
-    required VoidCallback onToggle,
-    required ThemeData theme,
-    required bool isDark,
-  }) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      margin: EdgeInsets.only(bottom: 12.h),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E293B) : Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: isDone ? theme.primaryColor : Colors.transparent,
-          width: 2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-        leading: Container(
-          padding: EdgeInsets.all(8.w),
-          decoration: BoxDecoration(
-            color: isDone ? theme.primaryColor.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            isDone ? Icons.check_circle : Icons.radio_button_unchecked,
-            color: isDone ? theme.primaryColor : Colors.grey,
-          ),
-        ),
-        title: Text(
-          prayer.tr,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            decoration: isDone ? TextDecoration.lineThrough : null,
-            color: isDone ? Colors.grey : (isDark ? Colors.white : Colors.black87),
-          ),
-        ),
-        trailing: Switch(
-          value: isDone,
-          onChanged: (_) => onToggle(),
-          activeColor: theme.primaryColor,
-        ),
-        onTap: onToggle,
-      ),
-    );
-  }
-
-  Widget _buildQuoteCard(bool isDark) {
+  Widget _buildCompletionMessage(ThemeData theme, bool isDark) {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.blue.withOpacity(0.05),
+        color: Colors.green.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: Colors.blue.withOpacity(0.1)),
+        border: Border.all(color: Colors.green.withOpacity(0.3)),
       ),
       child: Column(
         children: [
-          Icon(Icons.format_quote, color: Colors.blue, size: 24.sp),
+          Icon(Icons.stars, color: Colors.green, size: 40.sp),
           SizedBox(height: 8.h),
           Text(
-            "Verily, prayer restrains from shameful and unjust deeds.".tr,
-            textAlign: TextAlign.center,
+            "Masha'Allah!".tr,
             style: TextStyle(
-              fontSize: 13.sp,
-              fontStyle: FontStyle.italic,
-              color: isDark ? Colors.white70 : Colors.black87,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.green,
             ),
           ),
           SizedBox(height: 4.h),
           Text(
-            "(Quran 29:45)",
-            style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+            "You have completed all your prayers for today. May Allah accept your prayers and grant you success in this life and the hereafter."
+                .tr,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: isDark ? Colors.white70 : Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuoteCard(PrayerTrackerController controller, bool isDark) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isDark
+              ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
+              : [Colors.blue.withOpacity(0.05), Colors.blue.withOpacity(0.15)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withOpacity(0.05)
+              : Colors.blue.withOpacity(0.2),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            right: -20.w,
+            top: -20.h,
+            child: Icon(
+              Icons.format_quote,
+              size: 100.sp,
+              color: isDark
+                  ? Colors.white.withOpacity(0.03)
+                  : Colors.blue.withOpacity(0.05),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(24.w),
+            child: Obx(() {
+              final quoteData =
+                  controller.prayerQuotes[controller.currentQuoteIndex.value];
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.auto_awesome,
+                        color: Colors.amber,
+                        size: 20.sp,
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        "Did you know?".tr,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white70 : Colors.blueGrey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 600),
+                    switchInCurve: Curves.easeIn,
+                    switchOutCurve: Curves.easeOut,
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 0.1),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            ),
+                          );
+                        },
+                    child: Text(
+                      quoteData["quote"]!.tr,
+                      key: ValueKey<String>(quoteData["quote"]!),
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        height: 1.5,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w500,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 600),
+                    child: Align(
+                      key: ValueKey<String>(quoteData["reference"]!),
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        quoteData["reference"]!.tr,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }),
           ),
         ],
       ),

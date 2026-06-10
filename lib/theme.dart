@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Brand colors
@@ -45,6 +46,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
         elevation: 8,
       ),
+      textTheme: GoogleFonts.poppinsTextTheme(ThemeData.light().textTheme),
       dividerColor: Colors.black12,
     );
   }
@@ -73,6 +75,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
         elevation: 8,
       ),
+      textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
       dividerColor: Colors.white12,
     );
   }

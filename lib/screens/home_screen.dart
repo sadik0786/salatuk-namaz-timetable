@@ -19,7 +19,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  List<Widget> get _pages => [DashboardScreen(), PrayerScreen(), TasbihScreen(), DuaScreen()];
+  List<Widget> get _pages => [
+    DashboardScreen(),
+    PrayerScreen(),
+    TasbihScreen(),
+    DuaScreen(),
+  ];
 
   void _onItemTapped(int index) {
     if (index == 4) {
@@ -64,7 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildNavItem(Icons.home_outlined, Icons.home, 'Home', 0, theme, primaryColor),
+                  _buildNavItem(
+                    Icons.home_outlined,
+                    Icons.home,
+                    'Home',
+                    0,
+                    theme,
+                    primaryColor,
+                  ),
                   _buildNavItem(
                     Icons.mosque_outlined,
                     Icons.mosque,
@@ -108,19 +120,25 @@ class _HomeScreenState extends State<HomeScreen> {
     Color primaryColor,
   ) {
     final isSelected = _selectedIndex == index;
-    final color = isSelected ? primaryColor : theme.iconTheme.color?.withOpacity(0.5);
+    final color = isSelected
+        ? primaryColor
+        : theme.iconTheme.color?.withOpacity(0.5);
 
     return Expanded(
       child: InkWell(
         onTap: () => _onItemTapped(index),
         borderRadius: BorderRadius.circular(16.r),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 4.h),
+          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(isSelected ? solidIcon : outlineIcon, color: color, size: 24.sp),
+              Icon(
+                isSelected ? solidIcon : outlineIcon,
+                color: color,
+                size: 24.sp,
+              ),
               SizedBox(height: 2.h),
               FittedBox(
                 fit: BoxFit.scaleDown,
@@ -128,7 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   label,
                   style: TextStyle(
                     color: color,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                     fontSize: 10.sp,
                   ),
                 ),

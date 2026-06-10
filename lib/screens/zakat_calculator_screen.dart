@@ -82,7 +82,7 @@ class _ZakatCalculatorScreenState extends State<ZakatCalculatorScreen> {
           debtsSubtotal;
 
       // Nisab Threshold: 52.5 Tolas of Silver = 612.36g
-      double silverNisabThreshold = (double.tryParse(silverPriceController.text) ?? 0) * 0.61236;
+      double silverNisabThreshold = silverRatePerGram * 612.36;
 
       isAboveNisab = totalWealth >= silverNisabThreshold;
       zakatPayable = isAboveNisab ? totalWealth * 0.025 : 0.0;

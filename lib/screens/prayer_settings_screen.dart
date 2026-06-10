@@ -14,7 +14,7 @@ class PrayerSettingsScreen extends StatelessWidget {
     // Inject Controller
     final controller = Get.find<PrayerController>();
 
-    final prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    final prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Sehr', 'Iftar'];
 
     return PopScope(
       canPop: false,
@@ -134,7 +134,7 @@ class _PrayerOverrideCard extends StatelessWidget {
           children: [
             Expanded(
               child: _TimeBox(
-                label: "Azan Time".tr,
+                label: (prayer == 'Sehr' || prayer == 'Iftar') ? "Start Time".tr : "Azan Time".tr,
                 time: azan.isEmpty ? "API Default".tr : formatAmPm(azan),
                 onTap: () => _pickTime(context, true),
               ),
@@ -142,7 +142,7 @@ class _PrayerOverrideCard extends StatelessWidget {
             SizedBox(width: 12.w),
             Expanded(
               child: _TimeBox(
-                label: "Jamaat Time".tr,
+                label: (prayer == 'Sehr' || prayer == 'Iftar') ? "End Time".tr : "Jamaat Time".tr,
                 time: jamaat.isEmpty ? "API Default".tr : formatAmPm(jamaat),
                 onTap: () => _pickTime(context, false),
               ),

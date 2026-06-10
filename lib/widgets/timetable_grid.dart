@@ -50,89 +50,123 @@ class _TimetableGridState extends State<TimetableGrid> {
 
   @override
   Widget build(BuildContext context) {
-    const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumah', 'Sehr', 'Iftar'];
+    const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumah'];
+    const fastOrder = ['Sehr', 'Iftar'];
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
+      child: Stack(
         children: [
-          const TimetableHeader(),
-          SizedBox(height: 12.h),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.only(bottom: 40.h),
-              itemCount: prayerOrder.length,
-              itemBuilder: (context, index) {
-                final prayer = prayerOrder[index];
-                final isNext = widget.nextPrayer.startsWith(prayer);
-
-                String azan = 'N/A';
-                String jamaat = 'N/A';
-                String end = 'N/A';
-
-                if (prayer == 'Sehr') {
-                  azan = widget.timings['Imsak'] ?? widget.timings['Fajr'] ?? 'N/A';
-                  jamaat = '-';
-                  end = '-';
-                } else if (prayer == 'Iftar') {
-                  azan = widget.timings['Maghrib'] ?? 'N/A';
-                  jamaat = '-';
-                  end = '-';
-                } else if (prayer == 'Jumah') {
-                  azan = widget.timings['Dhuhr'] ?? 'N/A';
-                  jamaat = widget.jamaatTimes['Jumah'] ?? 'N/A';
-                  end = widget.endTimes['Dhuhr'] ?? 'N/A';
-                } else {
-                  azan = widget.timings[prayer] ?? 'N/A';
-                  jamaat = widget.jamaatTimes[prayer] ?? 'N/A';
-                  end = widget.endTimes[prayer] ?? 'N/A';
-                }
-
-                IconData prayerIcon;
-                switch (prayer) {
-                  case 'Fajr':
-                    prayerIcon = Icons.wb_twilight;
-                    break;
-                  case 'Dhuhr':
-                    prayerIcon = Icons.wb_sunny;
-                    break;
-                  case 'Asr':
-                    prayerIcon = Icons.wb_sunny_outlined;
-                    break;
-                  case 'Maghrib':
-                    prayerIcon = Icons.brightness_3;
-                    break;
-                  case 'Isha':
-                    prayerIcon = Icons.nights_stay;
-                    break;
-                  case 'Jumah':
-                    prayerIcon = Icons.diversity_3;
-                    break;
-                  case 'Sehr':
-                    prayerIcon = Icons.brightness_4;
-                    break;
-                  case 'Iftar':
-                    prayerIcon = Icons.local_dining;
-                    break;
-                  default:
-                    prayerIcon = Icons.access_time;
-                }
-
-                return _buildRow(
-                  context,
-                  prayer: prayer,
-                  icon: prayerIcon,
-                  azan: formatAmPm(azan),
-                  jamaat: formatAmPm(jamaat),
-                  end: formatAmPm(end),
-                  isNext: isNext,
-                  isNotificationEnabled: _notifications[prayer],
-                );
-              },
+          Positioned.fill(
+            child: Center(
+              child: Icon(
+                Icons.mosque,
+                size: 300.w,
+                color: Theme.of(context).primaryColor.withOpacity(
+                      Theme.of(context).brightness == Brightness.dark ? 0.03 : 0.05,
+                    ),
+              ),
             ),
+          ),
+          Column(
+            children: [
+              const TimetableHeader(),
+              SizedBox(height: 0.h),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.only(bottom: 20.h),
+                  children: [
+                    ...prayerOrder.map(
+                      (prayer) => _buildPrayerItem(context, prayer),
+                    ),
+                    Text(
+                      "Fasting Times".tr,
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    ...fastOrder.map((prayer) => _buildPrayerItem(context, prayer)),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPrayerItem(BuildContext context, String prayer) {
+    final isNext = widget.nextPrayer.startsWith(prayer);
+
+    String azan = 'N/A';
+    String jamaat = 'N/A';
+    String end = 'N/A';
+
+    if (prayer == 'Sehr') {
+      azan =
+          widget.timings['Sehr'] ??
+          widget.timings['Imsak'] ??
+          widget.timings['Fajr'] ??
+          'N/A';
+      jamaat = widget.jamaatTimes['Sehr'] ?? '-';
+      end = '-';
+    } else if (prayer == 'Iftar') {
+      azan = widget.timings['Iftar'] ?? widget.timings['Maghrib'] ?? 'N/A';
+      jamaat = widget.jamaatTimes['Iftar'] ?? '-';
+      end = '-';
+    } else if (prayer == 'Jumah') {
+      azan = widget.timings['Dhuhr'] ?? 'N/A';
+      jamaat = widget.jamaatTimes['Jumah'] ?? 'N/A';
+      end = widget.endTimes['Dhuhr'] ?? 'N/A';
+    } else {
+      azan = widget.timings[prayer] ?? 'N/A';
+      jamaat = widget.jamaatTimes[prayer] ?? 'N/A';
+      end = widget.endTimes[prayer] ?? 'N/A';
+    }
+
+    IconData prayerIcon;
+    switch (prayer) {
+      case 'Fajr':
+        prayerIcon = Icons.wb_twilight;
+        break;
+      case 'Dhuhr':
+        prayerIcon = Icons.wb_sunny;
+        break;
+      case 'Asr':
+        prayerIcon = Icons.wb_sunny_outlined;
+        break;
+      case 'Maghrib':
+        prayerIcon = Icons.brightness_3;
+        break;
+      case 'Isha':
+        prayerIcon = Icons.nights_stay;
+        break;
+      case 'Jumah':
+        prayerIcon = Icons.diversity_3;
+        break;
+      case 'Sehr':
+        prayerIcon = Icons.brightness_4;
+        break;
+      case 'Iftar':
+        prayerIcon = Icons.local_dining;
+        break;
+      default:
+        prayerIcon = Icons.access_time;
+    }
+
+    return _buildRow(
+      context,
+      prayer: prayer,
+      icon: prayerIcon,
+      azan: formatAmPm(azan),
+      jamaat: formatAmPm(jamaat),
+      end: formatAmPm(end),
+      isNext: isNext,
+      isNotificationEnabled: _notifications[prayer],
     );
   }
 
@@ -153,11 +187,13 @@ class _TimetableGridState extends State<TimetableGrid> {
     final onPrimary = theme.colorScheme.onPrimary;
 
     return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
+      margin: EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
         color: isNext
             ? null
-            : (isDark ? theme.colorScheme.surfaceContainerHighest.withOpacity(0.5) : Colors.white),
+            : (isDark
+                  ? theme.colorScheme.surfaceContainerHighest.withOpacity(0.5)
+                  : Colors.white),
         gradient: isNext
             ? LinearGradient(
                 colors: [primaryColor.withOpacity(0.9), primaryColor],
@@ -167,18 +203,22 @@ class _TimetableGridState extends State<TimetableGrid> {
             : null,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: isNext ? Colors.transparent : theme.dividerColor.withOpacity(0.05),
+          color: isNext
+              ? Colors.transparent
+              : theme.dividerColor.withOpacity(0.05),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: isNext ? primaryColor.withOpacity(0.5) : Colors.black.withOpacity(0.03),
+            color: isNext
+                ? primaryColor.withOpacity(0.5)
+                : Colors.black.withOpacity(0.03),
             blurRadius: isNext ? 15.r : 8.r,
             offset: Offset(0, isNext ? 6.h : 3.h),
           ),
         ],
       ),
-      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 8.w),
       child: Row(
         children: [
           Expanded(
@@ -188,10 +228,16 @@ class _TimetableGridState extends State<TimetableGrid> {
                 Container(
                   padding: EdgeInsets.all(8.r),
                   decoration: BoxDecoration(
-                    color: isNext ? onPrimary.withOpacity(0.2) : primaryColor.withOpacity(0.1),
+                    color: isNext
+                        ? onPrimary.withOpacity(0.2)
+                        : primaryColor.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, size: 18.sp, color: isNext ? onPrimary : primaryColor),
+                  child: Icon(
+                    icon,
+                    size: 18.sp,
+                    color: isNext ? onPrimary : primaryColor,
+                  ),
                 ),
                 SizedBox(width: 10.w),
                 Expanded(
@@ -205,8 +251,12 @@ class _TimetableGridState extends State<TimetableGrid> {
                               prayer.tr,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontWeight: isNext ? FontWeight.w800 : FontWeight.w700,
-                                color: isNext ? onPrimary : theme.colorScheme.onSurface,
+                                fontWeight: isNext
+                                    ? FontWeight.w800
+                                    : FontWeight.w700,
+                                color: isNext
+                                    ? onPrimary
+                                    : theme.colorScheme.onSurface,
                                 fontSize: 16.sp,
                                 letterSpacing: 0.3.w,
                               ),
@@ -223,7 +273,8 @@ class _TimetableGridState extends State<TimetableGrid> {
                                   ? onPrimary.withOpacity(0.9)
                                   : (isNotificationEnabled
                                         ? primaryColor
-                                        : theme.colorScheme.onSurface.withOpacity(0.3)),
+                                        : theme.colorScheme.onSurface
+                                              .withOpacity(0.3)),
                             ),
                           ],
                         ],
@@ -239,7 +290,9 @@ class _TimetableGridState extends State<TimetableGrid> {
                               fontWeight: FontWeight.w600,
                               color: isNext
                                   ? onPrimary.withOpacity(0.8)
-                                  : theme.colorScheme.onSurface.withOpacity(0.5),
+                                  : theme.colorScheme.onSurface.withOpacity(
+                                      0.5,
+                                    ),
                             ),
                           ),
                         ),
@@ -258,7 +311,9 @@ class _TimetableGridState extends State<TimetableGrid> {
                   azan,
                   style: TextStyle(
                     fontWeight: isNext ? FontWeight.bold : FontWeight.w600,
-                    color: isNext ? onPrimary : theme.colorScheme.onSurface.withOpacity(0.8),
+                    color: isNext
+                        ? onPrimary
+                        : theme.colorScheme.onSurface.withOpacity(0.8),
                     fontSize: 13.sp,
                   ),
                 ),
@@ -269,10 +324,14 @@ class _TimetableGridState extends State<TimetableGrid> {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 8.w),
               decoration: BoxDecoration(
-                color: isNext ? onPrimary.withOpacity(0.15) : theme.colorScheme.surface,
+                color: isNext
+                    ? onPrimary.withOpacity(0.15)
+                    : theme.colorScheme.surface,
                 borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(
-                  color: isNext ? Colors.transparent : theme.dividerColor.withOpacity(0.1),
+                  color: isNext
+                      ? Colors.transparent
+                      : theme.dividerColor.withOpacity(0.1),
                 ),
               ),
               child: Text(
