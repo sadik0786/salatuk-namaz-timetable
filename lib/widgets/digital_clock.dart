@@ -30,7 +30,8 @@ class DigitalClock extends StatefulWidget {
   State<DigitalClock> createState() => _DigitalClockState();
 }
 
-class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMixin {
+class _DigitalClockState extends State<DigitalClock>
+    with TickerProviderStateMixin {
   late Timer _timer;
   late DateTime _now;
   bool _showColon = true;
@@ -40,8 +41,10 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
   void initState() {
     super.initState();
     _now = DateTime.now();
-    _fadeController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000))
-      ..repeat(reverse: true);
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    )..repeat(reverse: true);
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (mounted) {
@@ -74,11 +77,12 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
     final hNow = HijriCalendar.fromDate(adjustedDate);
 
     // Use local calculation with offset for maximum reliability and synchronization with settings
-    String displayHijriDate = "${hNow.hDay} ${hNow.longMonthName.tr} ${hNow.hYear}";
+    String displayHijriDate =
+        "${hNow.hDay} ${hNow.longMonthName.tr} (${hNow.hMonth}) ${hNow.hYear}";
 
     // Improve formatting if it's Ramadan
     if (hNow.hMonth == 9) {
-      displayHijriDate = "${hNow.hDay} ${'Ramzan'.tr} ${hNow.hYear}";
+      displayHijriDate = "${hNow.hDay} ${'Ramzan'.tr} (9) ${hNow.hYear}";
     }
 
     final theme = Theme.of(context);
@@ -106,7 +110,10 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
       ),
       child: Container(
         padding: EdgeInsets.all(20.w),
-        decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(33.r)),
+        decoration: BoxDecoration(
+          color: surfaceColor,
+          borderRadius: BorderRadius.circular(33.r),
+        ),
         child: Column(
           children: [
             // Top Header: Date & Location/Temp
@@ -132,15 +139,26 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
                         duration: const Duration(milliseconds: 600),
                         switchInCurve: Curves.easeInOut,
                         switchOutCurve: Curves.easeInOut,
-                        layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
-                          return Stack(
-                            alignment: Alignment.centerLeft,
-                            children: <Widget>[...previousChildren, ?currentChild],
-                          );
-                        },
-                        transitionBuilder: (Widget child, Animation<double> animation) {
-                          return FadeTransition(opacity: animation, child: child);
-                        },
+                        layoutBuilder:
+                            (
+                              Widget? currentChild,
+                              List<Widget> previousChildren,
+                            ) {
+                              return Stack(
+                                alignment: Alignment.centerLeft,
+                                children: <Widget>[
+                                  ...previousChildren,
+                                  ?currentChild,
+                                ],
+                              );
+                            },
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
                         child: Text(
                           isShowingHijri ? displayHijriDate : dayAndMonth,
                           key: ValueKey(isShowingHijri),
@@ -155,7 +173,11 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
                   ],
                 ),
                 if (widget.temperature != null)
-                  _buildTemperatureChip(widget.temperature!, isDark, primaryColor),
+                  _buildTemperatureChip(
+                    widget.temperature!,
+                    isDark,
+                    primaryColor,
+                  ),
               ],
             ),
 
@@ -216,7 +238,9 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
                           ),
                           SizedBox(height: 2.h),
                           Text(
-                            widget.nextPrayer.isNotEmpty ? widget.nextPrayer.tr : "--",
+                            widget.nextPrayer.isNotEmpty
+                                ? widget.nextPrayer.tr
+                                : "--",
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w900,
@@ -235,7 +259,10 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
                         ],
                       ),
                     ),
-                    VerticalDivider(color: primaryColor.withOpacity(0.2), thickness: 1),
+                    VerticalDivider(
+                      color: primaryColor.withOpacity(0.2),
+                      thickness: 1,
+                    ),
                     // Sun Info
                     Expanded(
                       flex: 4,
@@ -287,10 +314,17 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
               Text(
                 "8",
                 style: styleBase.copyWith(
-                  color: isDark ? Colors.white.withOpacity(0.05) : Colors.black.withOpacity(0.05),
+                  color: isDark
+                      ? Colors.white.withOpacity(0.05)
+                      : Colors.black.withOpacity(0.05),
                 ),
               ),
-              Text(char, style: styleBase.copyWith(color: isDark ? Colors.white : Colors.black87)),
+              Text(
+                char,
+                style: styleBase.copyWith(
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+              ),
             ],
           ),
         );
@@ -344,7 +378,10 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
           alignment: Alignment.centerRight,
           children: [
             Text("8", style: styleBase.copyWith(color: color.withOpacity(0.1))),
-            Text(char, style: styleBase.copyWith(color: color.withOpacity(0.8))),
+            Text(
+              char,
+              style: styleBase.copyWith(color: color.withOpacity(0.8)),
+            ),
           ],
         );
       }).toList(),
@@ -360,7 +397,11 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
       ),
       child: Row(
         children: [
-          Icon(Icons.thermostat_rounded, size: 14.sp, color: Colors.orangeAccent),
+          Icon(
+            Icons.thermostat_rounded,
+            size: 14.sp,
+            color: Colors.orangeAccent,
+          ),
           SizedBox(width: 4.w),
           Text(
             "${temp.toStringAsFixed(1)}°c",
@@ -375,10 +416,19 @@ class _DigitalClockState extends State<DigitalClock> with TickerProviderStateMix
     );
   }
 
-  Widget _buildSunInfoRow(IconData icon, String label, String time, bool isDark) {
+  Widget _buildSunInfoRow(
+    IconData icon,
+    String label,
+    String time,
+    bool isDark,
+  ) {
     return Row(
       children: [
-        Icon(icon, size: 14.sp, color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
+        Icon(
+          icon,
+          size: 14.sp,
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+        ),
         SizedBox(width: 8.w),
         Text(
           "$label:",

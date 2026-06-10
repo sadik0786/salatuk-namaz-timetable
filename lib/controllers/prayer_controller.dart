@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:namaz_timetable/models/prayer_times_model.dart';
 import 'package:namaz_timetable/services/prayer_time_service.dart';
 import 'package:namaz_timetable/services/settings_service.dart';
@@ -204,9 +205,19 @@ class PrayerController extends GetxController {
     }
 
     String hijriDate = "";
-    if (prayerTimes.value?.hijri != null) {
-      hijriDate = prayerTimes.value!.hijri;
-      // Clean up extra numbers if present in API format, though string works as is
+    try {
+      final loc = await SettingsService.getLocation();
+      final int offset = loc['hijriOffset'] as int? ?? 0;
+      final adjustedDate = DateTime.now().add(Duration(days: offset));
+      final hNow = HijriCalendar.fromDate(adjustedDate);
+      hijriDate = "${hNow.hDay} ${hNow.longMonthName.tr} (${hNow.hMonth}) ${hNow.hYear}";
+      if (hNow.hMonth == 9) {
+        hijriDate = "${hNow.hDay} ${'Ramzan'.tr} (9) ${hNow.hYear}";
+      }
+    } catch (e) {
+      if (prayerTimes.value?.hijri != null) {
+        hijriDate = prayerTimes.value!.hijri;
+      }
     }
 
     try {
