@@ -25,7 +25,12 @@ class PrayerTimeService {
     this.hijriOffset = 0,
   });
 
-  void updateLocation(String newCity, String newCountry, {double? newLat, double? newLng}) {
+  void updateLocation(
+    String newCity,
+    String newCountry, {
+    double? newLat,
+    double? newLng,
+  }) {
     city = newCity;
     country = newCountry;
     latitude = newLat;
@@ -103,7 +108,13 @@ class PrayerTimeService {
 
   /// JAMAT TIME LOGIC
   Map<String, String> _calculateJamaatTimes(Map<String, String> timings) {
-    const delays = {'Fajr': 10, 'Dhuhr': 10, 'Asr': 10, 'Maghrib': 5, 'Isha': 10};
+    const delays = {
+      'Fajr': 10,
+      'Dhuhr': 10,
+      'Asr': 10,
+      'Maghrib': 5,
+      'Isha': 10,
+    };
 
     final result = <String, String>{};
 
@@ -128,7 +139,13 @@ class PrayerTimeService {
       if (t == null) continue;
 
       final parsed = DateFormat('HH:mm').parse(t);
-      final prayerTime = DateTime(now.year, now.month, now.day, parsed.hour, parsed.minute);
+      final prayerTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        parsed.hour,
+        parsed.minute,
+      );
 
       if (now.isBefore(prayerTime)) return prayer;
     }

@@ -14,11 +14,45 @@ class DuaScreen extends StatefulWidget {
 
 class _DuaScreenState extends State<DuaScreen> {
   String _selectedLanguage = 'Urdu';
+  String _selectedCategory = 'All';
 
   @override
   void initState() {
     super.initState();
     _selectedLanguage = SettingsService.languageNotifier.value;
+  }
+
+  String _getCategory(String title) {
+    final lowerTitle = title.toLowerCase();
+    if (lowerTitle.contains('sleep') ||
+        lowerTitle.contains('نیند') ||
+        lowerTitle.contains('سونے') ||
+        lowerTitle.contains('नींद') ||
+        lowerTitle.contains('सोने') ||
+        lowerTitle.contains('waking')) {
+      return 'Sleep';
+    }
+    if (lowerTitle.contains('eat') ||
+        lowerTitle.contains('کھانا') ||
+        lowerTitle.contains('खाना')) {
+      return 'Food';
+    }
+    if (lowerTitle.contains('mosque') ||
+        lowerTitle.contains('مسجد') ||
+        lowerTitle.contains('मस्जिद')) {
+      return 'Mosque';
+    }
+    if (lowerTitle.contains('travel') ||
+        lowerTitle.contains('سفر') ||
+        lowerTitle.contains('सफर')) {
+      return 'Travel';
+    }
+    if (lowerTitle.contains('toilet') ||
+        lowerTitle.contains('بیت الخلا') ||
+        lowerTitle.contains('शौचालय')) {
+      return 'Restroom';
+    }
+    return 'General';
   }
 
   final Map<String, List<Map<String, String>>> _duasByLanguage = {
@@ -99,7 +133,8 @@ class _DuaScreenState extends State<DuaScreen> {
       },
       {
         "title": "علم میں اضافے کی دعا",
-        "text": "رَّبِّ زِدْنِي عِلْمًا\n\nترجمہ: اے میرے رب! میرے علم میں اضافہ فرما۔",
+        "text":
+            "رَّبِّ زِدْنِي عِلْمًا\n\nترجمہ: اے میرے رب! میرے علم میں اضافہ فرما۔",
       },
       {
         "title": "دنیا و آخرت کی بھلائی کی دعا",
@@ -252,7 +287,8 @@ class _DuaScreenState extends State<DuaScreen> {
       },
       {
         "title": "Leaving Toilet",
-        "text": "غُفْرَانَكَ\n\nGhufranaka\nTranslation: I ask You (Allah) for forgiveness.",
+        "text":
+            "غُفْرَانَكَ\n\nGhufranaka\nTranslation: I ask You (Allah) for forgiveness.",
       },
       {
         "title": "After Wudu",
@@ -291,6 +327,11 @@ class _DuaScreenState extends State<DuaScreen> {
       valueListenable: SettingsService.languageNotifier,
       builder: (context, globalLang, _) {
         final duas = _duasByLanguage[_selectedLanguage]!;
+        final filteredDuas = _selectedCategory == 'All'
+            ? duas
+            : duas
+                  .where((d) => _getCategory(d['title']!) == _selectedCategory)
+                  .toList();
 
         return Scaffold(
           appBar: CommonAppBar(title: "Dua".tr),
@@ -310,7 +351,10 @@ class _DuaScreenState extends State<DuaScreen> {
               children: [
                 // Fancy Language Selector
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16.h,
+                    horizontal: 20.w,
+                  ),
                   child: Container(
                     padding: EdgeInsets.all(4.w),
                     decoration: BoxDecoration(
@@ -337,12 +381,15 @@ class _DuaScreenState extends State<DuaScreen> {
                               duration: const Duration(milliseconds: 300),
                               padding: EdgeInsets.symmetric(vertical: 10.h),
                               decoration: BoxDecoration(
-                                color: isSelected ? theme.colorScheme.primary : Colors.transparent,
+                                color: isSelected
+                                    ? theme.colorScheme.primary
+                                    : Colors.transparent,
                                 borderRadius: BorderRadius.circular(26.r),
                                 boxShadow: isSelected
                                     ? [
                                         BoxShadow(
-                                          color: theme.colorScheme.primary.withOpacity(0.3),
+                                          color: theme.colorScheme.primary
+                                              .withOpacity(0.3),
                                           blurRadius: 10,
                                           offset: const Offset(0, 4),
                                         ),
@@ -354,10 +401,14 @@ class _DuaScreenState extends State<DuaScreen> {
                                   lang,
                                   style: TextStyle(
                                     fontSize: 14.sp,
-                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                                    fontWeight: isSelected
+                                        ? FontWeight.bold
+                                        : FontWeight.w500,
                                     color: isSelected
                                         ? theme.colorScheme.onPrimary
-                                        : (isDark ? Colors.white60 : Colors.black54),
+                                        : (isDark
+                                              ? Colors.white60
+                                              : Colors.black54),
                                   ),
                                 ),
                               ),
@@ -369,15 +420,74 @@ class _DuaScreenState extends State<DuaScreen> {
                   ),
                 ),
 
-                const Divider(height: 1, thickness: 1, indent: 20, endIndent: 20),
-                
+                // Category Filter
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Row(
+                    children:
+                        [
+                          'All',
+                          'Sleep',
+                          'Food',
+                          'Mosque',
+                          'Travel',
+                          'Restroom',
+                          'General',
+                        ].map((cat) {
+                          final isSelected = _selectedCategory == cat;
+                          return Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: ChoiceChip(
+                              label: Text(cat.tr),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                if (selected) {
+                                  setState(() => _selectedCategory = cat);
+                                  HapticFeedback.selectionClick();
+                                }
+                              },
+                              selectedColor: theme.colorScheme.primary
+                                  .withOpacity(0.2),
+                              backgroundColor: isDark
+                                  ? Colors.white.withOpacity(0.05)
+                                  : Colors.black.withOpacity(0.03),
+                              labelStyle: TextStyle(
+                                color: isSelected
+                                    ? theme.colorScheme.primary
+                                    : (isDark
+                                          ? Colors.white60
+                                          : Colors.black54),
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.r),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                const Divider(
+                  height: 1,
+                  thickness: 1,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+
                 // Dua List
                 Expanded(
                   child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                    itemCount: duas.length,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20.w,
+                      vertical: 10.h,
+                    ),
+                    itemCount: filteredDuas.length,
                     itemBuilder: (context, index) {
-                      final dua = duas[index];
+                      final dua = filteredDuas[index];
                       return _DuaExpansionTile(
                         dua: dua,
                         isUrdu: _selectedLanguage == 'Urdu',
@@ -413,7 +523,8 @@ class _DuaExpansionTile extends StatefulWidget {
   State<_DuaExpansionTile> createState() => _DuaExpansionTileState();
 }
 
-class _DuaExpansionTileState extends State<_DuaExpansionTile> with SingleTickerProviderStateMixin {
+class _DuaExpansionTileState extends State<_DuaExpansionTile>
+    with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
 
   @override
@@ -430,7 +541,9 @@ class _DuaExpansionTileState extends State<_DuaExpansionTile> with SingleTickerP
         borderRadius: BorderRadius.circular(18.r),
         boxShadow: [
           BoxShadow(
-            color: _isExpanded ? Colors.blueGrey.withOpacity(0.1) : Colors.black.withOpacity(0.02),
+            color: _isExpanded
+                ? Colors.blueGrey.withOpacity(0.1)
+                : Colors.black.withOpacity(0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -466,7 +579,9 @@ class _DuaExpansionTileState extends State<_DuaExpansionTile> with SingleTickerP
                     child: Icon(
                       Icons.bookmarks_rounded,
                       size: 16.sp,
-                      color: _isExpanded ? Colors.blueGrey : Colors.grey.shade400,
+                      color: _isExpanded
+                          ? Colors.blueGrey
+                          : Colors.grey.shade400,
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -475,13 +590,17 @@ class _DuaExpansionTileState extends State<_DuaExpansionTile> with SingleTickerP
                       widget.dua['title']!,
                       style: TextStyle(
                         fontSize: 15.sp,
-                        fontWeight: _isExpanded ? FontWeight.w800 : FontWeight.w700,
+                        fontWeight: _isExpanded
+                            ? FontWeight.w800
+                            : FontWeight.w700,
                         color: _isExpanded
                             ? Colors.blueGrey.shade700
                             : theme.colorScheme.onSurface.withOpacity(0.8),
                         letterSpacing: -0.3,
                       ),
-                      textDirection: widget.isUrdu ? TextDirection.rtl : TextDirection.ltr,
+                      textDirection: widget.isUrdu
+                          ? TextDirection.rtl
+                          : TextDirection.ltr,
                     ),
                   ),
                   AnimatedRotation(
@@ -521,9 +640,17 @@ class _DuaExpansionTileState extends State<_DuaExpansionTile> with SingleTickerP
                       ),
                       child: SelectableText(
                         widget.dua['text']!,
-                        style: TextStyle(fontSize: 14.sp, height: 1.6, fontWeight: FontWeight.w500),
-                        textAlign: widget.isUrdu ? TextAlign.right : TextAlign.left,
-                        textDirection: widget.isUrdu ? TextDirection.rtl : TextDirection.ltr,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          height: 1.6,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: widget.isUrdu
+                            ? TextAlign.right
+                            : TextAlign.left,
+                        textDirection: widget.isUrdu
+                            ? TextDirection.rtl
+                            : TextDirection.ltr,
                       ),
                     ),
                     SizedBox(height: 12.h),
@@ -537,7 +664,8 @@ class _DuaExpansionTileState extends State<_DuaExpansionTile> with SingleTickerP
                           onTap: () {
                             Clipboard.setData(
                               ClipboardData(
-                                text: "${widget.dua['title']}\n\n${widget.dua['text']}",
+                                text:
+                                    "${widget.dua['title']}\n\n${widget.dua['text']}",
                               ),
                             );
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -555,12 +683,13 @@ class _DuaExpansionTileState extends State<_DuaExpansionTile> with SingleTickerP
                           onTap: () {
                             Clipboard.setData(
                               ClipboardData(
-                                text: "${widget.dua['title']}\n\n${widget.dua['text']}",
+                                text:
+                                    "${widget.dua['title']}\n\n${widget.dua['text']}",
                               ),
                             );
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(SnackBar(content: Text("Link copied".tr)));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Link copied".tr)),
+                            );
                           },
                         ),
                       ],
@@ -581,7 +710,11 @@ class _ActionButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _ActionButton({required this.icon, required this.label, required this.onTap});
+  const _ActionButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

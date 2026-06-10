@@ -46,6 +46,7 @@ class PrayerTrackerController extends GetxController {
   void onInit() {
     super.onInit();
     loadDayData(selectedDate.value);
+    loadQazaData();
     _startQuoteTimer();
   }
 
@@ -99,5 +100,41 @@ class PrayerTrackerController extends GetxController {
   void changeDate(DateTime date) {
     selectedDate.value = date;
     loadDayData(date);
+  }
+
+  // Qaza Trackers
+  var qazaStatus = <String, int>{
+    'Fajr': 0,
+    'Dhuhr': 0,
+    'Asr': 0,
+    'Maghrib': 0,
+    'Isha': 0,
+    'Witr': 0,
+  }.obs;
+
+  Future<void> loadQazaData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = prefs.getString('qaza_log');
+    if (jsonStr != null) {
+      final Map<String, dynamic> data = json.decode(jsonStr);
+      qazaStatus.value = data.map((key, value) => MapEntry(key, value as int));
+    }
+  }
+
+  Future<void> saveQazaData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('qaza_log', json.encode(qazaStatus));
+  }
+
+  void incrementQaza(String prayer) {
+    qazaStatus[prayer] = (qazaStatus[prayer] ?? 0) + 1;
+    saveQazaData();
+  }
+
+  void decrementQaza(String prayer) {
+    if ((qazaStatus[prayer] ?? 0) > 0) {
+      qazaStatus[prayer] = (qazaStatus[prayer] ?? 0) - 1;
+      saveQazaData();
+    }
   }
 }

@@ -49,14 +49,22 @@ class MyApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              supportedLocales: const [Locale('en'), Locale('ur'), Locale('ar'), Locale('hi')],
+              supportedLocales: const [
+                Locale('en'),
+                Locale('ur'),
+                Locale('ar'),
+                Locale('hi'),
+              ],
               themeMode: currentThemeMode,
               darkTheme: AppTheme.darkTheme,
               theme: AppTheme.lightTheme,
               defaultTransition: Transition.cupertino,
               transitionDuration: const Duration(milliseconds: 400),
               builder: (context, widget) {
-                return Directionality(textDirection: TextDirection.ltr, child: widget!);
+                return Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: widget!,
+                );
               },
               home: child,
             );

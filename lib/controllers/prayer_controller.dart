@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:home_widget/home_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:namaz_timetable/models/prayer_times_model.dart';
 import 'package:namaz_timetable/services/prayer_time_service.dart';
 import 'package:namaz_timetable/services/settings_service.dart';
@@ -36,7 +38,10 @@ class PrayerController extends GetxController {
         ),
         iOS: AudioContextIOS(
           category: AVAudioSessionCategory.playback,
-          options: {AVAudioSessionOptions.duckOthers, AVAudioSessionOptions.mixWithOthers},
+          options: {
+            AVAudioSessionOptions.duckOthers,
+            AVAudioSessionOptions.mixWithOthers,
+          },
         ),
       ),
     );
@@ -169,6 +174,55 @@ class PrayerController extends GetxController {
 
     final cleanName = nextPrayer.value.split(' ')[0];
     nextJamaatTime.value = jamaatTimes[cleanName] ?? "N/A";
+
+    _updateHomeWidget();
+  }
+
+  Future<void> _updateHomeWidget() async {
+    String formattedTime = nextJamaatTime.value;
+    String amPm = "";
+
+    if (formattedTime != "N/A" && formattedTime.isNotEmpty) {
+      try {
+        final cleanTime = formattedTime.split(' ')[0];
+        final parts = cleanTime.split(':');
+        final now = DateTime.now();
+        final dt = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          int.parse(parts[0]),
+          int.parse(parts[1]),
+        );
+        final full12h = DateFormat.jm().format(dt); // e.g. "5:25 PM"
+        final timeParts = full12h.split(' ');
+        formattedTime = timeParts[0];
+        if (timeParts.length > 1) amPm = timeParts[1];
+      } catch (e) {
+        debugPrint("Error formatting widget time: $e");
+      }
+    }
+
+    String hijriDate = "";
+    if (prayerTimes.value?.hijri != null) {
+      hijriDate = prayerTimes.value!.hijri;
+      // Clean up extra numbers if present in API format, though string works as is
+    }
+
+    try {
+      await HomeWidget.saveWidgetData<String>('prayer_name', nextPrayer.value);
+      await HomeWidget.saveWidgetData<String>('prayer_time', formattedTime);
+      await HomeWidget.saveWidgetData<String>('prayer_am_pm', amPm);
+      await HomeWidget.saveWidgetData<String>('hijri_date', hijriDate);
+      await HomeWidget.updateWidget(
+        name: 'PrayerWidgetProvider',
+        iOSName: 'PrayerWidgetProvider',
+      );
+      await HomeWidget.updateWidget(name: 'PrayerWidgetProviderLight');
+      await HomeWidget.updateWidget(name: 'PrayerWidgetProviderGlass');
+    } catch (e) {
+      debugPrint('Error updating home widget: $e');
+    }
   }
 
   // Removed _checkAndPlayPrayerSounds as sounds are now handled via NotificationService
@@ -176,7 +230,9 @@ class PrayerController extends GetxController {
 
   Future<void> saveOverride(String prayer, String? azan, String? jamaat) async {
     if (azan != null) await SettingsService.saveManualPrayerTime(prayer, azan);
-    if (jamaat != null) await SettingsService.saveManualJamaatTime(prayer, jamaat);
+    if (jamaat != null) {
+      await SettingsService.saveManualJamaatTime(prayer, jamaat);
+    }
 
     await refreshPrayerTimes();
 
@@ -212,7 +268,10 @@ class PrayerController extends GetxController {
           },
           child: Text(
             "STOP".tr,
-            style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: Colors.redAccent,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       );

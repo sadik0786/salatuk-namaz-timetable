@@ -15,6 +15,8 @@ import 'package:namaz_timetable/services/weather_service.dart';
 import 'package:namaz_timetable/screens/prayer_tracker_screen.dart';
 import 'package:namaz_timetable/screens/zakat_calculator_screen.dart';
 import 'package:namaz_timetable/screens/qibla_screen.dart';
+import 'package:namaz_timetable/screens/asma_ul_husna_screen.dart';
+import 'package:namaz_timetable/screens/quran_screen.dart';
 import 'package:namaz_timetable/screens/calendar_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -287,171 +289,177 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Obx(() {
             if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        final model = controller.prayerTimes.value;
-        if (model == null) return Center(child: Text("Error loading times".tr));
+            final model = controller.prayerTimes.value;
+            if (model == null) {
+              return Center(child: Text("Error loading times".tr));
+            }
 
-        final sunriseTime = _formatTime(model.timings['Sunrise'] ?? '');
-        final sunsetTime = _formatTime(
-          model.timings['Sunset'] ?? model.timings['Maghrib'] ?? '',
-        );
+            final sunriseTime = _formatTime(model.timings['Sunrise'] ?? '');
+            final sunsetTime = _formatTime(
+              model.timings['Sunset'] ?? model.timings['Maghrib'] ?? '',
+            );
 
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              ScrollTicker(
-                message:
-                    "👉 Welcome to Salatuk Timetable • Daily Salah & Ramzan Updates • Please keep your phone on silent 📵 during Jamaat • 🤲 Pray on time to be successful in both worlds • May Allah 🕋 accept our prayers • JazakAllah Khair"
-                        .tr,
-              ),
-              SizedBox(height: 14.h),
-              DigitalClock(
-                nextPrayer: controller.nextPrayer.value,
-                nextJamaatTime: controller.nextJamaatTime.value,
-                hijriOffset: controller.hijriOffset.value,
-                hijriDateString: controller.prayerTimes.value?.hijri,
-                sunrise: sunriseTime,
-                sunset: sunsetTime,
-                temperature: currentTemp,
-              ),
-              SizedBox(height: 16.h),
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 180.h,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  autoPlayInterval: const Duration(seconds: 4),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  viewportFraction: 0.85,
-                ),
-                items: dailyCards.isEmpty
-                    ? [const Center(child: CircularProgressIndicator())]
-                    : dailyCards.map((cardData) {
-                        // ... existing item code ...
-                        final type = cardData['type'];
-                        IconData typeIcon;
-                        switch (type) {
-                          case 'Daily Dua':
-                            typeIcon = Icons.auto_awesome;
-                            break;
-                          case 'Daily Hadith':
-                            typeIcon = Icons.history_edu;
-                            break;
-                          default:
-                            typeIcon = Icons.menu_book;
-                        }
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  ScrollTicker(
+                    message:
+                        "👉 Welcome to Salatuk Timetable • Daily Salah & Ramzan Updates • Please keep your phone on silent 📵 during Jamaat • 🤲 Pray on time to be successful in both worlds • May Allah 🕋 accept our prayers • JazakAllah Khair"
+                            .tr,
+                  ),
+                  SizedBox(height: 14.h),
+                  DigitalClock(
+                    nextPrayer: controller.nextPrayer.value,
+                    nextJamaatTime: controller.nextJamaatTime.value,
+                    hijriOffset: controller.hijriOffset.value,
+                    hijriDateString: controller.prayerTimes.value?.hijri,
+                    sunrise: sunriseTime,
+                    sunset: sunsetTime,
+                    temperature: currentTemp,
+                  ),
+                  SizedBox(height: 16.h),
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      height: 180.h,
+                      autoPlay: true,
+                      enlargeCenterPage: true,
+                      autoPlayInterval: const Duration(seconds: 4),
+                      autoPlayAnimationDuration: const Duration(
+                        milliseconds: 800,
+                      ),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      viewportFraction: 0.85,
+                    ),
+                    items: dailyCards.isEmpty
+                        ? [const Center(child: CircularProgressIndicator())]
+                        : dailyCards.map((cardData) {
+                            // ... existing item code ...
+                            final type = cardData['type'];
+                            IconData typeIcon;
+                            switch (type) {
+                              case 'Daily Dua':
+                                typeIcon = Icons.auto_awesome;
+                                break;
+                              case 'Daily Hadith':
+                                typeIcon = Icons.history_edu;
+                                break;
+                              default:
+                                typeIcon = Icons.menu_book;
+                            }
 
-                        final Color c1 = Color(
-                          int.parse(
-                            cardData['color1']!.replaceFirst('#', '0xFF'),
-                          ),
-                        );
-                        final Color c2 = Color(
-                          int.parse(
-                            cardData['color2']!.replaceFirst('#', '0xFF'),
-                          ),
-                        );
-
-                        return Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.symmetric(horizontal: 4.w),
-                          padding: EdgeInsets.all(16.w),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.r),
-                            gradient: LinearGradient(
-                              colors: [c1, c2],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: c2.withOpacity(0.4),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
+                            final Color c1 = Color(
+                              int.parse(
+                                cardData['color1']!.replaceFirst('#', '0xFF'),
                               ),
-                            ],
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12.w,
-                                    vertical: 4.h,
+                            );
+                            final Color c2 = Color(
+                              int.parse(
+                                cardData['color2']!.replaceFirst('#', '0xFF'),
+                              ),
+                            );
+
+                            return Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.symmetric(horizontal: 4.w),
+                              padding: EdgeInsets.all(16.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                gradient: LinearGradient(
+                                  colors: [c1, c2],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: c2.withOpacity(0.4),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(20.r),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        typeIcon,
-                                        size: 14.sp,
-                                        color: Colors.white,
+                                ],
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w,
+                                        vertical: 4.h,
                                       ),
-                                      SizedBox(width: 4.w),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(
+                                          20.r,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            typeIcon,
+                                            size: 14.sp,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(width: 4.w),
+                                          Text(
+                                            cardData['type']!.tr,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12.sp,
+                                              letterSpacing: 1.2,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    if (cardData['arabic']!.isNotEmpty)
                                       Text(
-                                        cardData['type']!.tr,
+                                        cardData['arabic']!,
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 12.sp,
-                                          letterSpacing: 1.2,
+                                          fontSize: 18.sp,
+                                          fontFamily: 'Amiri',
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 8.h),
-                                if (cardData['arabic']!.isNotEmpty)
-                                  Text(
-                                    cardData['arabic']!,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.sp,
-                                      fontFamily: 'Amiri',
+                                    SizedBox(height: 8.h),
+                                    Text(
+                                      cardData['translation']!.tr,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.sp,
+                                        fontStyle: FontStyle.italic,
+                                      ),
                                     ),
-                                  ),
-                                SizedBox(height: 8.h),
-                                Text(
-                                  cardData['translation']!.tr,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12.sp,
-                                    fontStyle: FontStyle.italic,
-                                  ),
+                                    SizedBox(height: 12.h),
+                                    Text(
+                                      "- ${cardData['reference']!} -",
+                                      style: TextStyle(
+                                        color: Colors.white54,
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 12.h),
-                                Text(
-                                  "- ${cardData['reference']!} -",
-                                  style: TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                              ),
+                            );
+                          }).toList(),
+                  ),
+                  SizedBox(height: 16.h),
+                  _buildToolsGrid(context, isDark),
+                  SizedBox(height: 16.h),
+                ],
               ),
-              SizedBox(height: 16.h),
-              _buildToolsGrid(context, isDark),
-              SizedBox(height: 16.h),
-            ],
-          ),
-        );
-      }),
+            );
+          }),
         ],
       ),
     );
@@ -504,10 +512,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
               SizedBox(width: 12.w),
               _buildToolCard(
                 context,
+                "99 Names".tr,
+                Icons.volunteer_activism_rounded,
+                Colors.pink,
+                () => Get.to(() => const AsmaUlHusnaScreen()),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              _buildToolCard(
+                context,
                 "Calendar".tr,
                 Icons.calendar_month,
                 Colors.purple,
                 () => Get.to(() => const CalendarScreen()),
+              ),
+              SizedBox(width: 12.w),
+              _buildToolCard(
+                context,
+                "Quran".tr,
+                Icons.menu_book_rounded,
+                Colors.teal,
+                () => Get.to(() => const QuranScreen()),
               ),
             ],
           ),

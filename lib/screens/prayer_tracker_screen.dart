@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:namaz_timetable/controllers/prayer_tracker_controller.dart';
-import 'package:namaz_timetable/widgets/common_app_bar.dart';
 
 class PrayerTrackerScreen extends StatelessWidget {
   const PrayerTrackerScreen({super.key});
@@ -15,37 +14,173 @@ class PrayerTrackerScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return Scaffold(
-      backgroundColor: isDark
-          ? const Color(0xFF0F172A)
-          : const Color(0xFFF8FAFC),
-      appBar: CommonAppBar(title: "Prayer Tracker".tr),
-      body: Column(
-        children: [
-          _buildDateHeader(controller, theme, isDark),
-          Expanded(
-            child: Obx(
-              () => ListView(
-                padding: EdgeInsets.all(16.w),
-                children: [
-                  _buildProgressCard(controller, theme, isDark),
-                  SizedBox(height: 20.h),
-                  _buildPrayerStepper(controller, theme, isDark),
-                  if (controller.prayerStatus.values.isNotEmpty &&
-                      controller.prayerStatus.values.every(
-                        (isDone) => isDone,
-                      )) ...[
-                    SizedBox(height: 24.h),
-                    _buildCompletionMessage(theme, isDark),
-                  ],
-                  SizedBox(height: 20.h),
-                  _buildQuoteCard(controller, isDark),
-                ],
-              ),
-            ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: isDark
+            ? const Color(0xFF0F172A)
+            : const Color(0xFFF8FAFC),
+        appBar: AppBar(
+          title: Text("Prayer Tracker".tr),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          bottom: TabBar(
+            indicatorColor: theme.colorScheme.primary,
+            labelColor: theme.colorScheme.primary,
+            unselectedLabelColor: isDark ? Colors.white54 : Colors.black54,
+            indicatorWeight: 3,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+            tabs: [
+              Tab(text: "Daily Progress".tr),
+              Tab(text: "Qaza Tracker".tr),
+            ],
           ),
-        ],
+        ),
+        body: TabBarView(
+          children: [
+            // Tab 1: Daily Progress
+            Column(
+              children: [
+                _buildDateHeader(controller, theme, isDark),
+                Expanded(
+                  child: Obx(
+                    () => ListView(
+                      padding: EdgeInsets.all(16.w),
+                      children: [
+                        _buildProgressCard(controller, theme, isDark),
+                        SizedBox(height: 20.h),
+                        _buildPrayerStepper(controller, theme, isDark),
+                        if (controller.prayerStatus.values.isNotEmpty &&
+                            controller.prayerStatus.values.every(
+                              (isDone) => isDone,
+                            )) ...[
+                          SizedBox(height: 24.h),
+                          _buildCompletionMessage(theme, isDark),
+                        ],
+                        SizedBox(height: 20.h),
+                        _buildQuoteCard(controller, isDark),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            // Tab 2: Qaza Namaz
+            _buildQazaTab(controller, theme, isDark),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildQazaTab(
+    PrayerTrackerController controller,
+    ThemeData theme,
+    bool isDark,
+  ) {
+    final prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Witr'];
+
+    return ListView.builder(
+      padding: EdgeInsets.all(16.w),
+      itemCount: prayers.length,
+      itemBuilder: (context, index) {
+        final prayer = prayers[index];
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : Colors.white,
+            borderRadius: BorderRadius.circular(20.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.access_time_filled,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      prayer.tr,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    Obx(() {
+                      final count = controller.qazaStatus[prayer] ?? 0;
+                      return Text(
+                        "Missed: $count",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: count > 0 ? Colors.redAccent : Colors.green,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+              Obx(() {
+                final count = controller.qazaStatus[prayer] ?? 0;
+                return Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.remove_circle_outline,
+                        color: theme.colorScheme.primary,
+                      ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        controller.decrementQaza(prayer);
+                      },
+                    ),
+                    Text(
+                      "$count",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.add_circle_outline,
+                        color: Colors.redAccent,
+                      ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        controller.incrementQaza(prayer);
+                      },
+                    ),
+                  ],
+                );
+              }),
+            ],
+          ),
+        );
+      },
     );
   }
 
