@@ -17,6 +17,25 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
   bool _isPlaying = false;
 
   @override
+  void initState() {
+    super.initState();
+    _initAudioPlayer();
+  }
+
+  Future<void> _initAudioPlayer() async {
+    await _audioPlayer.setAudioContext(
+      AudioContext(
+        android: AudioContextAndroid(
+          usageType: AndroidUsageType.media,
+          audioFocus: AndroidAudioFocus.gain,
+        ),
+        iOS: AudioContextIOS(category: AVAudioSessionCategory.playback),
+      ),
+    );
+    await _audioPlayer.setSource(AssetSource('sounds/asma_ul_husna.mp3'));
+  }
+
+  @override
   void dispose() {
     _audioPlayer.dispose();
     super.dispose();
@@ -29,11 +48,12 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
     } else {
       try {
         setState(() => _isPlaying = true);
-        await _audioPlayer.play(
-          UrlSource(
-            'https://archive.org/download/the-99-names-allah/Asma-ul-Husna%20The%2099%20Names%20Allah.mp3',
-          ),
-        );
+        if (_audioPlayer.state == PlayerState.paused ||
+            _audioPlayer.state == PlayerState.completed) {
+          await _audioPlayer.resume();
+        } else {
+          await _audioPlayer.play(AssetSource('sounds/asma_ul_husna.mp3'));
+        }
       } catch (e) {
         setState(() => _isPlaying = false);
         if (mounted) {

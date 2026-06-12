@@ -138,6 +138,8 @@ class NotificationService {
       await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_beep_v30');
       await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_azan_v40');
       await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_beep_v40');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_azan_v50');
+      await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_beep_v50');
       await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_azan_final_v1');
       await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_beep_final_v1');
       await androidPlugin?.deleteNotificationChannel(channelId: 'salatuk_azan_final_v2');
@@ -145,7 +147,7 @@ class NotificationService {
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_azan_v50',
+          'salatuk_azan_v51',
           'Azan Notifications',
           description: 'Loud alerts for Azan',
           importance: Importance.max,
@@ -159,7 +161,7 @@ class NotificationService {
 
       await androidPlugin?.createNotificationChannel(
         const AndroidNotificationChannel(
-          'salatuk_beep_v50',
+          'salatuk_beep_v51',
           'Jamaat Notifications',
           description: 'Beep alerts for Jamaat',
           importance: Importance.max,
@@ -186,7 +188,7 @@ class NotificationService {
             body: "It's time for $prayer prayer".tr,
             timeStr: azanTime,
             soundFile: 'azan',
-            channelId: 'salatuk_azan_v50',
+            channelId: 'salatuk_azan_v51',
           );
         }
 
@@ -199,7 +201,7 @@ class NotificationService {
             body: "Jamaat for $prayer is starting soon".tr,
             timeStr: jamaatTime,
             soundFile: 'beep',
-            channelId: 'salatuk_beep_v50',
+            channelId: 'salatuk_beep_v51',
           );
         }
       }
@@ -213,7 +215,7 @@ class NotificationService {
     // Using a simple Timer + Direct show to verify sound resource
     Future.delayed(const Duration(seconds: 5), () async {
       final androidDetails = AndroidNotificationDetails(
-        'salatuk_azan_v50',
+        'salatuk_azan_v51',
         'Azan Notifications',
         channelDescription: 'Loud alerts for Azan',
         importance: Importance.max,

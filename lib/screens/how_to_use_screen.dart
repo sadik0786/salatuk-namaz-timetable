@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:namaz_timetable/screens/about_screen.dart';
 import 'package:namaz_timetable/services/notification_service.dart';
 import 'package:namaz_timetable/widgets/common_app_bar.dart';
+import 'package:app_settings/app_settings.dart';
 
 class HowToUseScreen extends StatelessWidget {
   const HowToUseScreen({super.key});
@@ -14,7 +15,9 @@ class HowToUseScreen extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+      backgroundColor: isDark
+          ? const Color(0xFF0F172A)
+          : const Color(0xFFF8FAFC),
       appBar: CommonAppBar(title: "Help & Guide".tr),
       body: ListView(
         padding: EdgeInsets.all(16.w),
@@ -23,47 +26,111 @@ class HowToUseScreen extends StatelessWidget {
           SizedBox(height: 24.h),
 
           _buildGuideSection(
-            title: "1. Basic Setup".tr,
+            title: "Step 1: Turn On Notifications & Alarms".tr,
             items: [
               _GuideItem(
                 icon: Icons.notifications_active,
-                title: "Allow Notifications".tr,
+                title: "App Notifications".tr,
                 description:
-                    "Ensure you grant notification permission when prompted to hear the Azan.".tr,
+                    "Turn on notifications so you can receive Azan alerts.".tr,
+                action: ElevatedButton(
+                  onPressed: () => AppSettings.openAppSettings(
+                    type: AppSettingsType.notification,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent.withOpacity(0.1),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    "Turn On".tr,
+                    style: const TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
               ),
               _GuideItem(
                 icon: Icons.timer,
-                title: "Alarms Permission".tr,
+                title: "Exact Alarms".tr,
                 description:
-                    "This app needs 'Exact Alarm' permission to play Azan precisely at the right time."
-                        .tr,
-                action: TextButton(
-                  onPressed: () => NotificationService.requestExactAlarmPermission(),
-                  child: Text("Grant Now".tr, style: const TextStyle(color: Colors.blueAccent)),
+                    "Allow this so Azan plays exactly on the right time.".tr,
+                action: ElevatedButton(
+                  onPressed: () =>
+                      NotificationService.requestExactAlarmPermission(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent.withOpacity(0.1),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    "Turn On".tr,
+                    style: const TextStyle(color: Colors.blueAccent),
+                  ),
                 ),
               ),
             ],
           ),
 
           _buildGuideSection(
-            title: "2. Fixing Missed Azan (Crucial)".tr,
+            title: "Step 2: Check Volume & Silent Mode".tr,
+            items: [
+              _GuideItem(
+                icon: Icons.volume_up,
+                title: "Increase Alarm Volume".tr,
+                description:
+                    "Make sure your phone's 'Alarm Volume' is turned up to full."
+                        .tr,
+                action: ElevatedButton(
+                  onPressed: () =>
+                      AppSettings.openAppSettings(type: AppSettingsType.sound),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent.withOpacity(0.1),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    "Check Volume".tr,
+                    style: const TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
+              ),
+              _GuideItem(
+                icon: Icons.do_not_disturb_off,
+                title: "Bypass Silent Mode (DND)".tr,
+                description:
+                    "Allow the app to play Azan even when your phone is silent or in Do Not Disturb mode."
+                        .tr,
+                action: ElevatedButton(
+                  onPressed: () => AppSettings.openAppSettings(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent.withOpacity(0.1),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    "Fix Silent Mode".tr,
+                    style: const TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          _buildGuideSection(
+            title: "Step 3: Stop Phone from Killing App (Crucial)".tr,
             items: [
               _GuideItem(
                 icon: Icons.battery_saver,
-                title: "Battery Optimization".tr,
+                title: "Disable Battery Restrictions".tr,
                 description:
-                    "Android often kills background apps to save battery. To ensure Azan always plays:"
+                    "Phones often stop apps in the background. Change this setting to 'No Restrictions' or 'Unrestricted' to fix missing Azan."
                         .tr,
               ),
-              _GuideBullet("Open 'App Info' (Long press app icon)".tr),
-              _GuideBullet("Go to 'Battery Usage' or 'Battery Saver'".tr),
-              _GuideBullet("Select 'No Restrictions' or 'Don't Optimize'".tr),
+              _GuideBullet("Open 'App Info' (Long press the app icon)".tr),
+              _GuideBullet("Go to 'Battery' or 'Battery Usage'".tr),
+              _GuideBullet("Select 'Unrestricted' or 'No Restrictions'".tr),
               SizedBox(height: 10.h),
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () => NotificationService.requestBatteryOptimization(),
+                  onPressed: () =>
+                      NotificationService.requestBatteryOptimization(),
                   icon: const Icon(Icons.settings_applications),
-                  label: Text("Open Battery Settings".tr),
+                  label: Text("Fix Background Setting".tr),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange.shade700,
                     foregroundColor: Colors.white,
@@ -74,32 +141,37 @@ class HowToUseScreen extends StatelessWidget {
           ),
 
           _buildGuideSection(
-            title: "3. Xiaomi, Oppo, Vivo & Realme".tr,
+            title: "Step 4: Special Phone Settings".tr,
             items: [
               _GuideItem(
                 icon: Icons.phone_android,
-                title: "Special Permissions".tr,
-                description: "On these phones, you MUST enable these manually:".tr,
+                title: "Xiaomi, Oppo, Vivo & Realme".tr,
+                description:
+                    "If you have these phones, you must turn on these settings:"
+                        .tr,
               ),
-              _GuideBullet("Auto-start: Enable this in App Settings.".tr),
+              _GuideBullet("Auto-start: Turn this ON in App Settings.".tr),
               _GuideBullet(
-                "Lock Screen: Enable 'Show on Lock Screen' in Notification categories.".tr,
+                "Lock Screen: Allow 'Show on Lock Screen' in Notifications.".tr,
               ),
-              _GuideBullet("Floating Windows: Enable 'Display pop-up windows'.".tr),
+              _GuideBullet(
+                "Pop-up Windows: Allow 'Display pop-up windows'.".tr,
+              ),
             ],
           ),
 
           _buildGuideSection(
-            title: "4. Adjusting Times".tr,
+            title: "Step 5: Fixing Wrong Times".tr,
             items: [
               _GuideItem(
                 icon: Icons.edit_calendar,
-                title: "Manual Overrides".tr,
+                title: "Manual Time Correction".tr,
                 description:
-                    "If the calculated time is off by a few minutes, you can manually fix it:".tr,
+                    "If the time is slightly wrong, you can manually fix it yourself:"
+                        .tr,
               ),
               _GuideBullet("Go to 'Settings' > 'Adjust Prayer Times'.".tr),
-              _GuideBullet("Select the prayer and pick your preferred time.".tr),
+              _GuideBullet("Pick the correct time yourself.".tr),
             ],
           ),
 
@@ -127,20 +199,30 @@ class HowToUseScreen extends StatelessWidget {
           SizedBox(height: 12.h),
           Text(
             "How to use Salatuk".tr,
-            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           SizedBox(height: 8.h),
           Text(
             "Follow these steps for 100% reliable Azan alerts.".tr,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13.sp, color: Colors.white.withOpacity(0.9)),
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: Colors.white.withOpacity(0.9),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildGuideSection({required String title, required List<Widget> items}) {
+  Widget _buildGuideSection({
+    required String title,
+    required List<Widget> items,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -198,7 +280,9 @@ class _GuideItem extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Card(
       elevation: 0,
-      color: isDark ? Colors.white.withOpacity(0.05) : Colors.black.withOpacity(0.02),
+      color: isDark
+          ? Colors.white.withOpacity(0.05)
+          : Colors.black.withOpacity(0.02),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
       child: Padding(
         padding: EdgeInsets.all(12.w),
@@ -215,7 +299,10 @@ class _GuideItem extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       SizedBox(height: 4.h),
                       Text(
